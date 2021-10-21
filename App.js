@@ -11,6 +11,12 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 // Import Async
 import {AsyncStorage } from 'react-native';
 
+// Import Fonts and Icons
+import Feather from '@expo/vector-icons/Feather'
+import { useFonts, Nunito_400Regular as NunitoRegular, Nunito_700Bold as NunitoBold } from '@expo-google-fonts/nunito';
+import AppLoading from 'expo-app-loading';
+import * as Font from 'expo-font';
+
 //Import Screens
 import LoginScreen from './screens/LoginScreen';
 import HomeScreen from './screens/HomeScreen';
