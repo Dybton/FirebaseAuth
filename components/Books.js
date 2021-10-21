@@ -1,17 +1,17 @@
 import React from 'react'
 import { Pressable, StyleSheet, Text, View, ScrollView } from 'react-native'
 import theme from '../assets/themes'
-import albumPage from '../assets/data/albumPage'
+import bookPage from '../assets/data/bookPage'
 // This one needs to import data from firebase
 import Card from './Card'
 import Separator from './Separator'
 
-const Albums = ({navigation}) => {
+const Books = ({navigation}) => {
     return (
     <>
         <ScrollView>
-            <View style={styles.albumContainer}>
-                {albumPage.map((item, index) => 
+            <View style={styles.bookContainer}>
+                {bookPage.map((item, index) => 
                 <View key={index}>
                     <Card item={item} navigation={navigation}/>
                 </View>
@@ -23,7 +23,7 @@ const Albums = ({navigation}) => {
     );
 };
 
-export default Albums
+export default Books
 
 const styles = StyleSheet.create({
     container: {
@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center'
     }, 
-    albumContainer: {
+    bookContainer: {
         marginBottom: theme.spacing.l
 
 

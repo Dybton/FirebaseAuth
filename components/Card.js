@@ -1,7 +1,7 @@
 import React from 'react'
 import { ImageBackground, Pressable, StyleSheet, Text, View } from 'react-native'
 import theme from '../assets/themes'
-import Albums from './Albums'
+import Books from './Books'
 import { useNavigation } from '@react-navigation/native';
 
     const Card = ({item}) => {
@@ -11,10 +11,10 @@ import { useNavigation } from '@react-navigation/native';
                 source={item.background}
                 style={styles.ImageBackground}
             >
-                <Pressable onPress={() => navigation.navigate('Shared Album', {album: item})}>
+                <Pressable onPress={() => navigation.navigate('Book Detail', {book: item})}>
                     <View style={styles.imageContentContainer}>
                         <Text style={styles.imageTitle}> {item.title} </Text>
-                        <Text style={styles.imageSubtitle}> {`Created by ${item.user}`} </Text>
+                        <Text style={styles.imageSubtitle}> {`Written by ${item.author}`} </Text>
                     </View>
                 </Pressable>
             </ImageBackground>

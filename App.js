@@ -26,7 +26,7 @@ import LoadingScreen from './screens/LoadingScreen';
 import ProfileScreen from './screens/ProfileScreen';
 import StudyScreen from './screens/StudyScreen'
 import ProgressScreen from './screens/ProgressScreen';
-import SharedAlbums from './screens/SharedAlbums';
+import BookDetailScreen from './screens/BookDetailScreen';
 
 // Create Navigators
 const OnboardingStack = createNativeStackNavigator();
@@ -142,7 +142,7 @@ export default function App() {
     return (
       <HomeStack.Navigator>
         <HomeStack.Screen name="HomeStack" component={HomeScreen}/>
-        <HomeStack.Screen name="Shared Album" component={SharedAlbums} />
+        <HomeStack.Screen name="Book Detail" component={BookDetailScreen} />
       </HomeStack.Navigator>
     );
   }

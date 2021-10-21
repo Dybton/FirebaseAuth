@@ -1,11 +1,11 @@
 import React from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import Card from '../components/Card'
-import Albums from '../components/Albums'
+import Books from '../components/Books'
 
 const HomeScreen = ({navigation}) => {
   return (
-    <Albums/>
+    <Books/>
   )
 }
 

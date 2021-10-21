@@ -17,6 +17,6 @@ const styles = StyleSheet.create({
         marginTop: theme.spacing.m,
         marginHorizontal: theme.spacing.m,
         height: 1,
-        backgroundColor: theme.colors.gray
+        backgroundColor: "#000000"
     },
 })

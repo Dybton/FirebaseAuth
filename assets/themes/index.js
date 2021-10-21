@@ -39,7 +39,14 @@ const theme = {
       s: 100,
       m: 112,
       l: 123,
-    },
+    }, button: {
+      backgroundColor: '#0782F9',
+      width: '60%',
+      padding: 15,
+      borderRadius: 10,
+      alignItems: 'center',
+      marginTop: 40,
+    }
   }
   
   export default theme;

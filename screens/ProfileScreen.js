@@ -1,6 +1,9 @@
 import React from 'react'
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
 import { auth } from '../firebase'
+import Separator from '../components/Separator'
+
+// How can I pass data to this screen from homeScreen?
 
 const ProfileScreen = ({navigation}) => {
     const handleSignOut = () => {
@@ -17,6 +20,11 @@ const ProfileScreen = ({navigation}) => {
         <Text>ProfileScreen Screen </Text>
         <Text>Email: {auth.currentUser?.email}</Text>
         <Text> Uid = {auth.currentUser?.uid} </Text>
+        <Text> My books </Text>
+        <Text> Book 1 </Text>
+        <Text> Book 1 </Text>
+        <Text> Book 1 </Text>
+        <Separator/>
         <TouchableOpacity
             onPress={handleSignOut}
             style={styles.button}

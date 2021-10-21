@@ -9,62 +9,61 @@ import image8 from '../images/albumCoverImages/image8.png';
 import image9 from '../images/albumCoverImages/image9.png';
 
 
-const albumPage = [
+const bookPage = [
   {
     id: 1,
     title: 'Dogs',
-    user: 'You',
+    author: 'You',
     background: image1,
   },
   {
     id: 2,
     title: 'Travel',
-    user: 'You',
+    author: 'You',
     background: image2,
-    
   },
   {
     id: 3,
     title: 'Hiking',
-    user: 'Carla',
+    author: 'Carla',
     background: image3,
   },
   {
     id: 4,
     title: 'Night sky',
-    user: 'Jimmy',
+    author: 'Jimmy',
     background: image4,
   },
   {
     id: 5,
     title: 'Architecture',
-    user: 'Mike',
+    author: 'Mike',
     background: image5,
   },
   {
     id: 6,
     title: 'Art',
-    user: 'Jane',
+    author: 'Jane',
     background: image6,
   },
   {
     id: 7,
     title: 'Camping',
-    user: 'George',
+    author: 'George',
     background: image7,
   },
   {
     id: 8,
     title: 'California',
-    user: 'Steven',
+    author: 'Steven',
     background: image8,
   },
   {
     id: 8,
     title: 'Cars',
-    user: 'Claire',
+    author: 'Claire',
     background: image9,
   },
 ];
 
-export default albumPage;
+export default bookPage;
