@@ -5,7 +5,7 @@ const ProgressScreen = ({navigation}) => {
     return (
         <View style={styles.container}>
             <Text>ProgressScreen</Text>
-            <TouchableOpacity onPress={()=> navigation.replace("StudyQuestions")}>
+            <TouchableOpacity onPress={()=> navigation.navigate("StudyQuestions")}>
                 <Text> Study </Text>
             </TouchableOpacity>
         </View>

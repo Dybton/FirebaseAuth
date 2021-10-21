@@ -1,14 +1,11 @@
 import React from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import Card from '../components/Card'
+import Albums from '../components/Albums'
 
 const HomeScreen = ({navigation}) => {
   return (
-    <View style={styles.container}>
-      <Text> Home Screen </Text>
-      <TouchableOpacity onPress={()=> navigation.replace("BookDetail")}>
-                <Text> Book </Text>
-            </TouchableOpacity>
-    </View>
+    <Albums/>
   )
 }
 

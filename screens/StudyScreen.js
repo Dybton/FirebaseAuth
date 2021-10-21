@@ -1,5 +1,6 @@
 import React from 'react'
 import { StyleSheet, Text, View } from 'react-native'
+import theme from '../assets/themes'
 import { auth } from '../firebase'
 
 const StudyScreen = () => {
@@ -16,7 +17,7 @@ const styles = StyleSheet.create({
     container: {
       flex: 1,
       justifyContent: 'center',
-      alignItems: 'center'
+      alignItems: 'center',
     },
      button: {
       backgroundColor: '#0782F9',

@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { LoginMethod, auth} from './firebase';
 
+
 // Importing React Navigation V5
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -11,11 +12,12 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 // Import Async
 import {AsyncStorage } from 'react-native';
 
-// Import Fonts and Icons
-import Feather from '@expo/vector-icons/Feather'
+// Import Fonts, icons and themes
+// import Feather from '@expo/vector-icons/Feather'
 import { useFonts, Nunito_400Regular as NunitoRegular, Nunito_700Bold as NunitoBold } from '@expo-google-fonts/nunito';
 import AppLoading from 'expo-app-loading';
 import * as Font from 'expo-font';
+import { DefaultTheme } from '@react-navigation/native';
 
 //Import Screens
 import LoginScreen from './screens/LoginScreen';
@@ -33,6 +35,16 @@ const LoginStack = createNativeStackNavigator();
 const HomeStack = createNativeStackNavigator();
 const StudyStack = createNativeStackNavigator();
 const Tabs = createBottomTabNavigator();
+
+// The theme we'll be using for our navigator
+// can be used to set the general theme
+const MyTheme = {
+  ...DefaultTheme,
+  colors: {
+    ...DefaultTheme.colors,
+    background: '#FAFAFA'
+  },
+};
 
 
 export default function App() {
@@ -79,8 +91,8 @@ export default function App() {
     return (
       // OnboardingStack:
       // Refactor this so there's no duplicate code
-      <NavigationContainer>
-        <OnboardingStack.Navigator initialRouteName={OnboardingScreen} screenOptions={{headerShown: false }} options={{gestureEnabled: false}}>
+      <NavigationContainer theme={MyTheme}>
+        <OnboardingStack.Navigator initialRouteName={OnboardingScreen} screenOptions={{headerShown: false }}>
           <OnboardingStack.Screen name="Onboarding" component ={OnboardingScreen} />
           <OnboardingStack.Screen name="Loading" component={LoadingScreen} />
           <OnboardingStack.Screen name="Login" component={LoginScreen} />
@@ -92,8 +104,9 @@ export default function App() {
   } else {
     return (
       // LoginStack
-      <NavigationContainer>
-        <LoginStack.Navigator initialRouteName={LoadingScreen} screenOptions={{headerShown: false }} options={{gestureEnabled: false}}>
+      // Refactor this so there's no duplicate code
+      <NavigationContainer theme={MyTheme}>
+        <LoginStack.Navigator initialRouteName={LoadingScreen} screenOptions={{headerShown: false }}>
           <LoginStack.Screen name="Loading" component={LoadingScreen}/>
           <LoginStack.Screen name="Login" component={LoginScreen} />
           <LoginStack.Screen name="HomeTab" component={TabsScreen} />
@@ -110,16 +123,17 @@ export default function App() {
         name="Home"
         component={HomeStackScreen}
         options={{ headerShown: false }}
+        
       />
       <Tabs.Screen
         name="Study"
         component={StudyStackScreen}
-        options={{ headerShown: false }}
+        // options={{ headerShown: false }}
       />
       <Tabs.Screen
         name="Profile"
         component={ProfileScreen}
-        options={{ headerShown: false }}
+        // options={{ headerShown: false }}
       />
     </Tabs.Navigator>
   );
@@ -127,11 +141,8 @@ export default function App() {
   // This navigator handles the home and book part
   function HomeStackScreen() {
     return (
-      <HomeStack.Navigator screenOptions={{headerShown: false }}>
-        <HomeStack.Screen
-          name="Home"
-          component={HomeScreen}
-        />
+      <HomeStack.Navigator>
+        <HomeStack.Screen name="HomeStack" component={HomeScreen}/>
         <HomeStack.Screen name="BookDetail" component={BookDetailScreen} />
       </HomeStack.Navigator>
     );
@@ -140,7 +151,7 @@ export default function App() {
   // This navigator handles the study part
   function StudyStackScreen() {
     return (
-      <StudyStack.Navigator screenOptions={{headerShown: false }}>
+      <StudyStack.Navigator>
         <StudyStack.Screen name="Progress" component={ProgressScreen} />
         <StudyStack.Screen name="StudyQuestions" component={StudyScreen}/>
       </StudyStack.Navigator>
