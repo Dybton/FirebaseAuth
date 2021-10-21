@@ -1,7 +1,12 @@
 import React from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 
-const BookDetailScreen = () => {
+
+const SharedAlbums = ({route}) => {
+    const album = route.params;
+
+    console.log(album);
+
     return (
         <View style={styles.container}>
             <Text></Text>
@@ -9,12 +14,12 @@ const BookDetailScreen = () => {
     )
 }
 
-export default BookDetailScreen
+export default SharedAlbums
 
 const styles = StyleSheet.create({
     container: {
-      flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center'
-    },
-  })
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center'
+    }
+})

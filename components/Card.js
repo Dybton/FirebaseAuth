@@ -1,10 +1,11 @@
 import React from 'react'
 import { ImageBackground, Pressable, StyleSheet, Text, View } from 'react-native'
-import { withSafeAreaInsets } from 'react-native-safe-area-context'
 import theme from '../assets/themes'
+import Albums from './Albums'
+import { useNavigation } from '@react-navigation/native';
 
-// const Card = ({item, navigation}) => {
-    const Card = ({item, navigation}) => {
+    const Card = ({item}) => {
+        const navigation = useNavigation();
         return (
             <ImageBackground
                 source={item.background}
@@ -35,13 +36,13 @@ ImageBackground: {
 },
 imageContentContainer: {
 },
-// imageTitle: {
-//     ...theme.textVariants.h1,
-//     color: theme.colors.white,
-// },
-// imageSubtitle: {
-//     ...theme.textVariants.body2,
-//     color: theme.colors.white
-// }
+imageTitle: {
+    ...theme.textVariants.h1,
+    color: theme.colors.white,
+},
+imageSubtitle: {
+    ...theme.textVariants.body2,
+    color: theme.colors.white
+}
 
 })

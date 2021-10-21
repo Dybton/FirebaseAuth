@@ -1,4 +1,3 @@
-import { NavigationContainer, ThemeProvider } from '@react-navigation/native'
 import React from 'react'
 import { Pressable, StyleSheet, Text, View, ScrollView } from 'react-native'
 import theme from '../assets/themes'

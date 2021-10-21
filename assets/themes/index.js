@@ -15,23 +15,18 @@ const theme = {
     },
     textVariants: {
       h1: {
-        fontFamily: 'NunitoBold',
         fontSize: 24,
       },
       h2: {
-        fontFamily: 'NunitoBold',
         fontSize: 18,
       },
       body1: {
-        fontFamily: 'NunitoRegular',
         fontSize: 18,
       },
       body2: {
-        fontFamily: 'NunitoRegular',
         fontSize: 16,
       },
       body3: {
-        fontFamily: 'NunitoRegular',
         fontSize: 14,
       },
     },

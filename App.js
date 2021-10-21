@@ -14,7 +14,6 @@ import {AsyncStorage } from 'react-native';
 
 // Import Fonts, icons and themes
 // import Feather from '@expo/vector-icons/Feather'
-import { useFonts, Nunito_400Regular as NunitoRegular, Nunito_700Bold as NunitoBold } from '@expo-google-fonts/nunito';
 import AppLoading from 'expo-app-loading';
 import * as Font from 'expo-font';
 import { DefaultTheme } from '@react-navigation/native';
@@ -27,7 +26,7 @@ import LoadingScreen from './screens/LoadingScreen';
 import ProfileScreen from './screens/ProfileScreen';
 import StudyScreen from './screens/StudyScreen'
 import ProgressScreen from './screens/ProgressScreen';
-import BookDetailScreen from './screens/BookDetailScreen';
+import SharedAlbums from './screens/SharedAlbums';
 
 // Create Navigators
 const OnboardingStack = createNativeStackNavigator();
@@ -143,7 +142,7 @@ export default function App() {
     return (
       <HomeStack.Navigator>
         <HomeStack.Screen name="HomeStack" component={HomeScreen}/>
-        <HomeStack.Screen name="BookDetail" component={BookDetailScreen} />
+        <HomeStack.Screen name="Shared Album" component={SharedAlbums} />
       </HomeStack.Navigator>
     );
   }
