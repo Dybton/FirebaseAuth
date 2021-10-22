@@ -30,7 +30,7 @@ if (firebase.apps.length === 0) {
 const db = firebase.firestore();
 
 // Gives us access to authentification
-const auth = firebase.auth();
+const auth = firebase.auth(); 
 
 // Firebase Login and Register Methods
 const SignUpMethod = (email, password) => {
@@ -52,6 +52,8 @@ const LoginMethod = (email, password) => {
     })
     .catch(error => alert(error.message))
 }
+
+
 
 
 export { auth, db, SignUpMethod, LoginMethod };

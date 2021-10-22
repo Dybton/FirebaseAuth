@@ -1,8 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { LoginMethod, auth} from './firebase';
-
+import { LoginMethod, auth, db} from './firebase';
 
 // Importing React Navigation V5
 import { NavigationContainer } from '@react-navigation/native';
@@ -50,6 +49,7 @@ export default function App() {
   // Async Storage States 
   const [isFirstLaunch, setIsFirstLaunch] = useState('')
   const [statusKeyLoaded, setStatusKeyLoaded] = useState(false)
+  
 
   // Every time page loads it checks if it's first launch or not.
   useEffect(() => {
@@ -115,15 +115,28 @@ export default function App() {
   }
 }
 
-  
   // Create the Tab Screen navigation. 
   // To do: Get find new icons
-  const TabsScreen = () => (
-    <Tabs.Navigator>
+  function TabsScreen() {
+    const [books, setBooks] = useState([]);
+
+    useEffect(() => {
+        getBooks();
+    },[])
+
+    const getBooks = () => {
+        db.collection('books').onSnapshot(snapshot => (
+            setBooks(
+                snapshot.docs.map((doc) => ({id: doc.id, ...doc.data()})))
+        ))
+    }
+
+    return (
+      <Tabs.Navigator>
       <Tabs.Screen
         name="Home"
-        component={HomeStackScreen}
         options={{ headerShown: false }}
+        children={()=><HomeStackScreen books={books}/>}
         
       />
       <Tabs.Screen
@@ -133,17 +146,21 @@ export default function App() {
       />
       <Tabs.Screen
         name="Profile"
-        component={ProfileScreen}
+        children={()=><ProfileScreen books={books}/>}
         // options={{ headerShown: false }}
       />
     </Tabs.Navigator>
-  );
+    );
+  }
 
   // This navigator handles the home and book part
-  function HomeStackScreen() {
+  function HomeStackScreen({books}) {
     return (
       <HomeStack.Navigator>
-        <HomeStack.Screen name="HomeStack" component={HomeScreen}/>
+        <HomeStack.Screen 
+            name="HomeStack" 
+            children={()=><HomeScreen books={books}/>}
+            />
         <HomeStack.Screen name="Book Detail" component={BookDetailScreen} />
       </HomeStack.Navigator>
     );

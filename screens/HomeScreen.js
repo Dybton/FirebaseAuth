@@ -5,24 +5,13 @@ import React, { useState, useEffect } from 'react';
 import { auth, db } from '../firebase';
 import bookPage from '../assets/data/bookPage';
 
-const HomeScreen = ({navigation}) => {
-  const [books, setBooks] = useState([]);
-
-    useEffect(() => {
-        getBooks();
-    },[])
-
-    const getBooks = () => {
-        db.collection('books').onSnapshot(snapshot => (
-            setBooks(
-                snapshot.docs.map((doc) => ({id: doc.id, ...doc.data()})))
-        ))
-    }
-
+const HomeScreen = ({navigation, books}) => {
   return (
     <Books books={books}/>
   )
 }
+
+// I need to do something about the ordering!
 
 export default HomeScreen
 
