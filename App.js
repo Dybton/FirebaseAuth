@@ -114,6 +114,8 @@ export default function App() {
     )
   }
 }
+
+  
   // Create the Tab Screen navigation. 
   // To do: Get find new icons
   const TabsScreen = () => (

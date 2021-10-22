@@ -1,17 +1,19 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Pressable, StyleSheet, Text, View, ScrollView } from 'react-native'
 import theme from '../assets/themes'
 import bookPage from '../assets/data/bookPage'
 // This one needs to import data from firebase
 import Card from './Card'
 import Separator from './Separator'
+import { db } from '../firebase'
 
-const Books = ({navigation}) => {
+const Books = ({navigation, books}) => {
+
     return (
     <>
         <ScrollView>
             <View style={styles.bookContainer}>
-                {bookPage.map((item, index) => 
+                {books.map((item, index) => 
                 <View key={index}>
                     <Card item={item} navigation={navigation}/>
                 </View>

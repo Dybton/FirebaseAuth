@@ -1,11 +1,33 @@
-import React from 'react'
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
-import { auth } from '../firebase'
+import { auth, db } from '../firebase'
 import Separator from '../components/Separator'
-
+import React, { useState, useEffect } from 'react';
+import ProfileComponent from '../components/ProfileComponent';
+import UserBooksComponent from '../components/UserBooksComponent';
 // How can I pass data to this screen from homeScreen?
 
-const ProfileScreen = ({navigation}) => {
+const ProfileScreen = ({navigation, propName}) => {
+    const [isLoading, setIsLoading] = useState(true);
+    console.log(propName)
+    const [user, setUser] = useState([{
+          // Dummy object
+          id: 1,
+          title: 'Loading',
+          author: 'Loading',
+          name: 'Loading'
+        },]);
+
+  useEffect(() => {
+    getUser();
+  }, [])
+
+  async function getUser() {
+    db.collection('userObjects').onSnapshot(snapshot => (
+      setUser(snapshot.docs.map((doc) => ({id: doc.id, ...doc.data()})))
+  ))
+  }
+
+    // Signout Function
     const handleSignOut = () => {
         auth
           .signOut()
@@ -15,15 +37,17 @@ const ProfileScreen = ({navigation}) => {
           .catch(error => alert(error.message))
       }
 
+    if(user === undefined) {
+      return(
+      <View>
+        <Text>Loading</Text> 
+      </View>
+      );
+    } else {
     return (
     <View style={styles.container}>
-        <Text>ProfileScreen Screen </Text>
-        <Text>Email: {auth.currentUser?.email}</Text>
-        <Text> Uid = {auth.currentUser?.uid} </Text>
-        <Text> My books </Text>
-        <Text> Book 1 </Text>
-        <Text> Book 1 </Text>
-        <Text> Book 1 </Text>
+        <ProfileComponent user={user}/>
+        <UserBooksComponent user={user}/>
         <Separator/>
         <TouchableOpacity
             onPress={handleSignOut}
@@ -33,7 +57,7 @@ const ProfileScreen = ({navigation}) => {
         </TouchableOpacity>
     </View>
     )
-}
+}}
 
 export default ProfileScreen
 

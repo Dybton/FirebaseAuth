@@ -1,11 +1,26 @@
-import React from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import Card from '../components/Card'
 import Books from '../components/Books'
+import React, { useState, useEffect } from 'react';
+import { auth, db } from '../firebase';
+import bookPage from '../assets/data/bookPage';
 
 const HomeScreen = ({navigation}) => {
+  const [books, setBooks] = useState([]);
+
+    useEffect(() => {
+        getBooks();
+    },[])
+
+    const getBooks = () => {
+        db.collection('books').onSnapshot(snapshot => (
+            setBooks(
+                snapshot.docs.map((doc) => ({id: doc.id, ...doc.data()})))
+        ))
+    }
+
   return (
-    <Books/>
+    <Books books={books}/>
   )
 }
 

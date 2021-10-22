@@ -6,6 +6,7 @@ import { useNavigation } from '@react-navigation/native';
 
     const Card = ({item}) => {
         const navigation = useNavigation();
+
         return (
             <ImageBackground
                 source={item.background}
@@ -38,11 +39,11 @@ imageContentContainer: {
 },
 imageTitle: {
     ...theme.textVariants.h1,
-    color: theme.colors.white,
+    // color: theme.colors.white,
 },
 imageSubtitle: {
     ...theme.textVariants.body2,
-    color: theme.colors.white
+    // color: theme.colors.white
 }
 
 })
