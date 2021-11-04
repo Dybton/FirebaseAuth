@@ -2,6 +2,8 @@ import React from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 
 const FinishedBooksComponent = ({user, books}) => {
+    // This method finds the reading book titles
+
     return (
         <View>
             <Text>FinishedBooksComponent</Text>

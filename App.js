@@ -119,17 +119,97 @@ export default function App() {
   // To do: Get find new icons
   function TabsScreen() {
     const [books, setBooks] = useState([]);
+    const [userBooks, setUserBooks] = useState([]);
+    const [user, setUser] = useState([]);
+    // const [finishedBooks, setFinishedBooks] = useState([]);
+    // const [booksInProgress, setBooksInProgress] = useState([]);
+    
+    // Consider an alternative to the compound queries
 
+    // call the db methods I need
     useEffect(() => {
-        getBooks();
+      fetchData();
+      getUserBooks()
     },[])
 
+    console.log(userBooks)
+
+    // console.log(books.length + " " + userBooks.length + " " + user.length)
+
+
+  // Defining the different get Methods 
+
+  const fetchData = () => {
+    // Call all the methods
+    
+    // Get the Books
     const getBooks = () => {
-        db.collection('books').onSnapshot(snapshot => (
-            setBooks(
-                snapshot.docs.map((doc) => ({id: doc.id, ...doc.data()})))
-        ))
+      db.collection('books').onSnapshot(snapshot => (
+          setBooks(
+              snapshot.docs.map((doc) => ({id: doc.id, ...doc.data()})))
+      ))
     }
+
+    //Get the user object - should be a get method
+    const getUser = () => {
+      const arr = [];
+      db.collection("userObjects").where("uid", "==", auth.currentUser.uid).onSnapshot(snapshot => (
+          setUser(
+            snapshot.docs.map((doc) => ({id: doc.id, ...doc.data()}))
+            )
+    ))}
+    getBooks();
+    getUser();
+  }
+
+  // Get the BookUserObject - should be a get method
+  // const getUserBooks = () => {
+  //   db.collection('userBooks').where("uid", "==", auth.currentUser.uid).onSnapshot(snapshot => (
+  //     setUserBooks(
+  //           snapshot.docs.map((doc) => ({id: doc.id, ...doc.data()})))
+  //   ))
+  // }
+
+  const getUserBooks = () => {
+    db.collection('userBooks').where("uid", "==", auth.currentUser.uid).get().then((snapshot) => {
+      snapshot.forEach(doc => {
+        const data = doc.data();
+
+        // COnt from here
+      }
+      })
+  }
+  
+  {
+        snapshot.forEach(doc => {
+          const data = doc.data();
+          console.log(doc.id, data);
+        });
+      })
+      .catch(err => {
+        console.log('Error getting documents', err);
+      });
+    
+  
+
+  
+
+  
+
+  // Different Database helper methods
+
+  function getBookArray() {
+    if (userBooks[0].id !== 1 ) {
+    const readBooks = [];
+    const size = userBooks[0].read.length;
+    for (let i = 0; i <= size - 1; i++) {
+      readBooks.push(books.filter(x => x.title === userBooks[0].read[i]))
+    }
+    // setFinishedBooks(readBooks)
+  }
+}
+
+
 
     return (
       <Tabs.Navigator>

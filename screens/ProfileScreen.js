@@ -9,12 +9,17 @@ import UserBooksComponent from '../components/UserBooksComponent';
 const ProfileScreen = ({navigation, books}) => {
   const [user, setUser] = useState([{id: 1, title: 'Loading', author: 'Loading', name: 'Loading' }]); // Dummy object
   const [userBooks, setUserBooks] = useState([{id: 1, title: 'Loading', author: 'Loading', name: 'Loading' }]); // Dummy object
+  const [booksInProgress, setBooksInProgress] = useState(['loading']);
+  const [finishedBooks, setFinishedBooks] = useState(['loading']);
 
   // Calling the getMethods when the page loads, or when the page is rerendered. 
   useEffect(() => {
     getUser();
     getUserBooks();
   }, [])
+
+  // console.log(getBookArray(userBooks[0].read))
+  // console.log(getBookArray(getReadingBookTitles()))
 
   // Here we get the user object
   async function getUser() {
@@ -28,37 +33,19 @@ const ProfileScreen = ({navigation, books}) => {
       setUserBooks(snapshot.docs.map((doc) => ({id: doc.id, ...doc.data()})))
   ))}
 
-  
-  // This function gets the read books - tested. - WE USE THIS
-  // function getReadBooks() {
-  //   if (userBooks[0].id !== 1 ) {
-  //     const readBooks = [];
-  //     const size = userBooks[0].read.length;
-  //     for (let i = 0; i <= size - 1; i++) {
-  //       readBooks.push(books.filter(x => x.title === userBooks[0].read[i]))
-  //     }
-
-  //   return(readBooks)
-  //   }
-  // }
-
-  // This function takes an array and some objects. It then finds the objects where the array values matches the objects titles
+  // This function takes an array and some objects. // It then finds the objects where the array values matches the objects titles
   // getReadBooks(userBooks[0].read)
-  function getReadBooks(bookArray) {
+  function getBookArray(bookArray) {
     if (userBooks[0].id !== 1 ) {
-      const readBooks = [];
-      const size = bookArray.length;
-      for (let i = 0; i <= size - 1; i++) {
-        readBooks.push(books.filter(x => x.title === bookArray[i]))
-      }
-
-    console.log(readBooks)
+    const readBooks = [];
+    const size = bookArray.length;
+    for (let i = 0; i <= size - 1; i++) {
+      readBooks.push(books.filter(x => x.title === bookArray[i]))
     }
+    return (readBooks)
   }
+}
 
-  getReadBooks(getReadingBookTitles())
-
-  // This method finds the reading book titles
   function getReadingBookTitles() {
     if (userBooks[0].id !== 1 ) {
       // const size = userBooks[0].reading.length;
@@ -71,8 +58,6 @@ const ProfileScreen = ({navigation, books}) => {
     }
   }
 
-
-  
 
   // Signout Function - Doesn't work! Need to fix!
     const handleSignOut = () => {
@@ -88,15 +73,16 @@ const ProfileScreen = ({navigation, books}) => {
       return(
       <View>
         <Text>Loading</Text>
-
       </View>
       );
     } else {
     return (
     <View style={styles.container}>
-        <Text> </Text>
+        
         <ProfileComponent user={user}/>
-        <UserBooksComponent user={user} books={books}/>
+        <Text> Books in progress </Text>
+        <UserBooksComponent books={getBookArray(userBooks[0].read)}/>
+        {/* <UserBooksComponent books={getBookArray(getReadingBookTitles())}/> */}
         <Separator/>
         <TouchableOpacity
             onPress={handleSignOut}
