@@ -12,10 +12,11 @@ const ProfileScreen = ({navigation, books}) => {
   // const [books1, setBooks1] = useState([{id: 1, title: 'Loading', author: 'Loading', name: 'Loading' }]); // Dummy object
   const [Loaded, setLoaded] = useState(false);
   const [finishedBooks, setFinishedBooks] = useState([]);
+  const [booksInProgress, setBooksInProgress] = useState([]);
+
 
   
   // const [userBooks, setUserBooks] = useState([{id: 1, title: 'Loading', author: 'Loading', name: 'Loading' }]); // Dummy object
-  // const [booksInProgress, setBooksInProgress] = useState(['loading']);
 
   // Calling the getMethods when the page loads, or when the page is rerendered. 
   useEffect(() => {
@@ -60,22 +61,17 @@ const ProfileScreen = ({navigation, books}) => {
   }
 
   const SetReadingBooks = () => {
-    if(Loaded) 
+    if(Loaded)
     {
-      // let booksReading = [];
-      // user.reading.forEach(element => {
-      //   let book = books.filter(d => 
-      //     d.title == element
-      //     )
-      //     booksReading.push(book[0])
-      // });
-      console.log(user.reading[0].title)
-
+      let booksReading = [];
+      for (let i = 0; i <= user.reading.length - 1; i++) {
+        let book = books.filter(d => 
+          d.title == user.reading[i].title)
+          booksReading.push(book[0])
+      }
+      setBooksInProgress(booksReading)
     }
-    // console.log(booksReading)
   }
-
-  
 
   // Helper function that finds the user's read books and returns them in array form 
   function getReadBooksArray(){
@@ -156,8 +152,9 @@ const ProfileScreen = ({navigation, books}) => {
         
         <ProfileComponent user={user}/>
         <Text> Books in progress </Text>
+        <UserBooksComponent books={booksInProgress}/>
+        <Text> Finished Books </Text>
         <UserBooksComponent books={finishedBooks}/>
-        {/* <UserBooksComponent books={getBookArray()}/> */}
         <Separator/>
         <TouchableOpacity
             onPress={handleSignOut}
