@@ -119,7 +119,7 @@ export default function App() {
   // To do: Get find new icons
   function TabsScreen() {
     const [books, setBooks] = useState([]);
-    const [userBooks, setUserBooks] = useState([]);
+    // const [userBooks, setUserBooks] = useState([]);
     const [user, setUser] = useState([]);
     // const [finishedBooks, setFinishedBooks] = useState([]);
     // const [booksInProgress, setBooksInProgress] = useState([]);
@@ -129,16 +129,10 @@ export default function App() {
     // call the db methods I need
     useEffect(() => {
       fetchData();
-      getUserBooks()
+      // getUserBooks()
     },[])
 
-    console.log(userBooks)
-
-    // console.log(books.length + " " + userBooks.length + " " + user.length)
-
-
   // Defining the different get Methods 
-
   const fetchData = () => {
     // Call all the methods
     
@@ -150,7 +144,7 @@ export default function App() {
       ))
     }
 
-    //Get the user object - should be a get method
+    // Get the user object - should be a get method
     const getUser = () => {
       const arr = [];
       db.collection("userObjects").where("uid", "==", auth.currentUser.uid).onSnapshot(snapshot => (
@@ -162,6 +156,7 @@ export default function App() {
     getUser();
   }
 
+
   // Get the BookUserObject - should be a get method
   // const getUserBooks = () => {
   //   db.collection('userBooks').where("uid", "==", auth.currentUser.uid).onSnapshot(snapshot => (
@@ -170,25 +165,25 @@ export default function App() {
   //   ))
   // }
 
-  const getUserBooks = () => {
-    db.collection('userBooks').where("uid", "==", auth.currentUser.uid).get().then((snapshot) => {
-      snapshot.forEach(doc => {
-        const data = doc.data();
-
-        // COnt from here
-      }
-      })
-  }
+  // const getUserBooks = () => {
+  //   db.collection('userBooks').where("uid", "==", auth.currentUser.uid).get().then((snapshot) => {
+  //     snapshot.forEach(doc => {
+  //       const data = doc.data();
+  //       setUserBooks(data)
+  //       // console.log(doc.id, data);
+  //       // console.log("fun");
+  //     })})}
+  //     getUserBooks();
   
-  {
-        snapshot.forEach(doc => {
-          const data = doc.data();
-          console.log(doc.id, data);
-        });
-      })
-      .catch(err => {
-        console.log('Error getting documents', err);
-      });
+  // {
+  //       snapshot.forEach(doc => {
+  //         const data = doc.data();
+  //         console.log(doc.id, data);
+  //       });
+  //     })
+  //     .catch(err => {
+  //       console.log('Error getting documents', err);
+  //     });
     
   
 

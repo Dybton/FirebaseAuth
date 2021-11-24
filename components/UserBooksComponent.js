@@ -6,7 +6,7 @@ import React, { useState, useEffect } from 'react';
 import { auth, db } from '../firebase'
 
 const UserBooksComponent = ({books}) => {
-    
+
     if (books !== undefined) {
 
     return (
@@ -20,7 +20,7 @@ const UserBooksComponent = ({books}) => {
     return (
         <> 
             <ScrollView>
-                <Text> Test </Text>
+                <Text> Loading </Text>
             </ScrollView>
         </>
         );
