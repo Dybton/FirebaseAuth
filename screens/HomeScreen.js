@@ -2,16 +2,24 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import Card from '../components/Card'
 import Books from '../components/Books'
 import React, { useState, useEffect } from 'react';
+import Separator from '../components/Separator'
 import { auth, db } from '../firebase';
 import bookPage from '../assets/data/bookPage';
 
-const HomeScreen = ({navigation, books}) => {
+const HomeScreen = ({navigation, books, user}) => {
+
   return (
-    <Books books={books}/>
+    <View>
+    <View style={styles.headerContainer}>
+    <Text style={styles.headerText}> Welcome {user.name}</Text>
+    </View>
+    <Separator/>
+    <View>
+      <Books books={books}/>
+    </View>
+    </View>
   )
 }
-
-
 
 // I need to do something about the ordering!
 
@@ -36,4 +44,13 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     fontSize: 16,
   },
+  headerContainer: {
+    paddingTop: 50,
+    alignItems: 'center',
+  },
+  headerText: {
+    color: 'black',
+    fontWeight: '400',
+    fontSize: 30,
+  }
 })

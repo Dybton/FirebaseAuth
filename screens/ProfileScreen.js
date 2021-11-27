@@ -5,18 +5,16 @@ import React, { useState, useEffect } from 'react';
 import ProfileComponent from '../components/ProfileComponent';
 import UserBooksComponent from '../components/UserBooksComponent';
 import { isLoaded } from 'expo-font';
+import { useNavigation } from '@react-navigation/native';
 // How can I pass data to this screen from homeScreen?
 
-const ProfileScreen = ({navigation, books}) => {
+const ProfileScreen = ({books}) => {
+  const navigation = useNavigation();
   const [user, setUser] = useState([{id: 1, title: 'Loading', author: 'Loading', name: 'Loading' }]); // Dummy object
-  // const [books1, setBooks1] = useState([{id: 1, title: 'Loading', author: 'Loading', name: 'Loading' }]); // Dummy object
   const [Loaded, setLoaded] = useState(false);
   const [finishedBooks, setFinishedBooks] = useState([]);
   const [booksInProgress, setBooksInProgress] = useState([]);
-
-
-  
-  // const [userBooks, setUserBooks] = useState([{id: 1, title: 'Loading', author: 'Loading', name: 'Loading' }]); // Dummy object
+  const [sender, setSender] = useState('profile');
 
   // Calling the getMethods when the page loads, or when the page is rerendered. 
   useEffect(() => {
@@ -25,7 +23,6 @@ const ProfileScreen = ({navigation, books}) => {
     }
     fetchData();
   }, [Loaded])
-
 
   const getUser = async () => {
     const userRef = db.collection('userObjects');
@@ -82,55 +79,6 @@ const ProfileScreen = ({navigation, books}) => {
     }
     return (readBooks)
 }
-
-// const getBooks = async () => {
-  //   const booksRef = db.collection('books');
-  //   try {
-  //     const books = await booksRef.get();
-  //     for(const doc of books.docs){
-  //       const data = doc.data();
-  //     }
-  //   } catch(err) {
-  //     alert(err)
-  //   }
-  // }
-  
-
-
-  // const getBooks = () => {
-  //   db.collection('books').onSnapshot(snapshot => (
-  //       setBooks(snapshot.docs.map((doc) => ({id: doc.id, ...doc.data()})))
-  //   ))
-  // }
-  
-
-  // const getUser = () => {
-  //   db.collection('userObjects').where("uid", "==", auth.currentUser.uid).get().then((snapshot) => {
-  //     snapshot.forEach(doc => {
-  //       const data = doc.data();
-
-  //       console.log(data.email);
-  //       setUser(data)
-  //     })})
-  //     return true;
-  //   }
-
-  // This function takes an array and some objects. // It then finds the objects where the array values matches the objects titles
-  // getReadBooks(userBooks[0].read)
-  // This is not currently in use
-  function getReadingBookTitles() {
-    if (userBooks[0].id !== 1 ) {
-      // const size = userBooks[0].reading.length;
-      const readingBookTitles = [];
-      const size = userBooks[0].reading.length;
-      for (let i = 0; i <= size - 1; i++) {
-        readingBookTitles.push(userBooks[0].reading[i].title)
-      }
-      return(readingBookTitles)
-    }
-  }
-
-  // Signout Function - Doesn't work! Need to fix!
     const handleSignOut = () => {
         auth
           .signOut()
@@ -149,19 +97,24 @@ const ProfileScreen = ({navigation, books}) => {
     } else {
     return (
     <View style={styles.container}>
-        
-        <ProfileComponent user={user}/>
-        <Text> Books in progress </Text>
-        <UserBooksComponent books={booksInProgress}/>
-        <Text> Finished Books </Text>
-        <UserBooksComponent books={finishedBooks}/>
+        <View style={styles.headerContainer}> 
+          <Text style={styles.headerText}> Books in progress </Text>
+        </View>
         <Separator/>
-        <TouchableOpacity
-            onPress={handleSignOut}
-            style={styles.button}
-        >
-        <Text style={styles.buttonText}>Sign out</Text>
-        </TouchableOpacity>
+        <UserBooksComponent books={booksInProgress} sender={sender}/>
+        <View style={styles.headerContainer}> 
+          <Text style={styles.headerText}> Finished books </Text>
+        </View>
+        <Separator/>
+        <UserBooksComponent books={finishedBooks} sender={sender}/>
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity
+              onPress={handleSignOut}
+              style={styles.button}
+          >
+          <Text style={styles.buttonText}>Sign out</Text>
+          </TouchableOpacity>
+        </View>
     </View>
     )
 }}
@@ -172,7 +125,6 @@ const styles = StyleSheet.create({
     container: {
       flex: 1,
       justifyContent: 'center',
-      alignItems: 'center'
     },
      button: {
       backgroundColor: '#0782F9',
@@ -186,5 +138,16 @@ const styles = StyleSheet.create({
       color: 'white',
       fontWeight: '700',
       fontSize: 16,
+    }, headerContainer: {
+      paddingTop: 50,
+      alignItems: 'center',
     },
+    headerText: {
+      color: 'black',
+      fontWeight: '400',
+      fontSize: 30,
+    }, buttonContainer: {
+      paddingTop: 50,
+      alignItems: 'center',
+    }
   })

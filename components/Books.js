@@ -4,25 +4,42 @@ import theme from '../assets/themes'
 import bookPage from '../assets/data/bookPage'
 // This one needs to import data from firebase
 import Card from './Card'
+import ProfileCard from './ProfileCard'
 import Separator from './Separator'
 import { db } from '../firebase'
 
-const Books = ({navigation, books}) => {
+const Books = ({navigation, books, sender}) => {
 
+    if(sender == 'profile') {
     return (
     <>
         <ScrollView>
             <View style={styles.bookContainer}>
                 {books.map((item, index) => 
                 <View key={index}>
-                    <Card item={item} navigation={navigation}/>
+                    <ProfileCard item={item} sender={sender}/>
                 </View>
                 )} 
 
             </View>
         </ScrollView>
     </>
-    );
+    );} else {
+        return (
+            <>
+                <ScrollView>
+                    <View style={styles.bookContainer}>
+                        {books.map((item, index) => 
+                        <View key={index}>
+                            <Card item={item} navigation={navigation} sender={sender}/>
+                        </View>
+                        )} 
+        
+                    </View>
+                </ScrollView>
+            </>
+            );
+    }
 };
 
 export default Books

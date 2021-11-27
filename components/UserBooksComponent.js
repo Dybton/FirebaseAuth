@@ -5,14 +5,14 @@ import Books from './Books';
 import React, { useState, useEffect } from 'react';
 import { auth, db } from '../firebase'
 
-const UserBooksComponent = ({books}) => {
+const UserBooksComponent = ({books, sender}) => {
 
     if (books !== undefined) {
 
     return (
     <> 
         <ScrollView>
-            <Books books={books}/>
+            <Books books={books} sender={sender}/>
         </ScrollView>
     </>
     );

@@ -119,23 +119,19 @@ export default function App() {
   // To do: Get find new icons
   function TabsScreen() {
     const [books, setBooks] = useState([]);
-    // const [userBooks, setUserBooks] = useState([]);
     const [user, setUser] = useState([]);
-    // const [finishedBooks, setFinishedBooks] = useState([]);
-    // const [booksInProgress, setBooksInProgress] = useState([]);
-    
-    // Consider an alternative to the compound queries
 
     // call the db methods I need
     useEffect(() => {
+      function fetchData(){
+        getUser();
+        getBooks();
+      }
       fetchData();
-      // getUserBooks()
     },[])
 
   // Defining the different get Methods 
-  const fetchData = () => {
-    // Call all the methods
-    
+
     // Get the Books
     const getBooks = () => {
       db.collection('books').onSnapshot(snapshot => (
@@ -144,74 +140,26 @@ export default function App() {
       ))
     }
 
-    // Get the user object - should be a get method
-    const getUser = () => {
-      const arr = [];
-      db.collection("userObjects").where("uid", "==", auth.currentUser.uid).onSnapshot(snapshot => (
-          setUser(
-            snapshot.docs.map((doc) => ({id: doc.id, ...doc.data()}))
-            )
-    ))}
-    getBooks();
-    getUser();
-  }
-
-
-  // Get the BookUserObject - should be a get method
-  // const getUserBooks = () => {
-  //   db.collection('userBooks').where("uid", "==", auth.currentUser.uid).onSnapshot(snapshot => (
-  //     setUserBooks(
-  //           snapshot.docs.map((doc) => ({id: doc.id, ...doc.data()})))
-  //   ))
-  // }
-
-  // const getUserBooks = () => {
-  //   db.collection('userBooks').where("uid", "==", auth.currentUser.uid).get().then((snapshot) => {
-  //     snapshot.forEach(doc => {
-  //       const data = doc.data();
-  //       setUserBooks(data)
-  //       // console.log(doc.id, data);
-  //       // console.log("fun");
-  //     })})}
-  //     getUserBooks();
-  
-  // {
-  //       snapshot.forEach(doc => {
-  //         const data = doc.data();
-  //         console.log(doc.id, data);
-  //       });
-  //     })
-  //     .catch(err => {
-  //       console.log('Error getting documents', err);
-  //     });
-    
-  
-
-  
-
-  
-
-  // Different Database helper methods
-
-  function getBookArray() {
-    if (userBooks[0].id !== 1 ) {
-    const readBooks = [];
-    const size = userBooks[0].read.length;
-    for (let i = 0; i <= size - 1; i++) {
-      readBooks.push(books.filter(x => x.title === userBooks[0].read[i]))
+  // Get the user object - should be a get method
+    const getUser = async () => {
+      const userRef = db.collection('userObjects');
+      try {
+        const users = await userRef.where("uid", "==", auth.currentUser.uid).get();
+        for(const doc of users.docs){
+          const data = doc.data();
+          setUser(data)
+        }
+      } catch(err) {
+        alert(err)
+      }
     }
-    // setFinishedBooks(readBooks)
-  }
-}
-
-
 
     return (
       <Tabs.Navigator>
       <Tabs.Screen
         name="Home"
         options={{ headerShown: false }}
-        children={()=><HomeStackScreen books={books}/>}
+        children={()=><HomeStackScreen books={books} user={user}/>}
         
       />
       <Tabs.Screen
@@ -222,19 +170,20 @@ export default function App() {
       <Tabs.Screen
         name="Profile"
         children={()=><ProfileScreen books={books}/>}
-        // options={{ headerShown: false }}
+        options={{ headerShown: false }}
       />
     </Tabs.Navigator>
     );
   }
 
   // This navigator handles the home and book part
-  function HomeStackScreen({books}) {
+  function HomeStackScreen({books, user}) {
     return (
       <HomeStack.Navigator>
         <HomeStack.Screen 
             name="HomeStack" 
-            children={()=><HomeScreen books={books}/>}
+            children={()=><HomeScreen books={books} user={user}/>}
+            options={{ headerShown: false }}
             />
         <HomeStack.Screen name="Book Detail" component={BookDetailScreen} />
       </HomeStack.Navigator>
