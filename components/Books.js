@@ -8,7 +8,7 @@ import ProfileCard from './ProfileCard'
 import Separator from './Separator'
 import { db } from '../firebase'
 
-const Books = ({navigation, books, sender}) => {
+const Books = ({navigation, books, sender, user}) => {
 
     if(sender == 'profile') {
     return (
@@ -17,7 +17,7 @@ const Books = ({navigation, books, sender}) => {
             <View style={styles.bookContainer}>
                 {books.map((item, index) => 
                 <View key={index}>
-                    <ProfileCard item={item} sender={sender}/>
+                    <ProfileCard item={item}/>
                 </View>
                 )} 
 
@@ -31,7 +31,7 @@ const Books = ({navigation, books, sender}) => {
                     <View style={styles.bookContainer}>
                         {books.map((item, index) => 
                         <View key={index}>
-                            <Card item={item} navigation={navigation} sender={sender}/>
+                            <Card item={item} navigation={navigation} user={user}/>
                         </View>
                         )} 
         

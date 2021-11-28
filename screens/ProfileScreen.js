@@ -1,11 +1,11 @@
 import { StyleSheet, Text, View, TouchableOpacity, addons } from 'react-native'
-import { auth, db, getDoc, doc } from '../firebase'
+import { auth, db} from '../firebase'
 import Separator from '../components/Separator'
 import React, { useState, useEffect } from 'react';
 import ProfileComponent from '../components/ProfileComponent';
 import UserBooksComponent from '../components/UserBooksComponent';
 import { isLoaded } from 'expo-font';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 // How can I pass data to this screen from homeScreen?
 
 const ProfileScreen = ({books}) => {
@@ -22,7 +22,15 @@ const ProfileScreen = ({books}) => {
       getUser();
     }
     fetchData();
+
   }, [Loaded])
+
+  useFocusEffect(
+    React.useCallback(() => {
+    })
+  );
+
+  // Maybe if I change the getUser to a listener instead?
 
   const getUser = async () => {
     const userRef = db.collection('userObjects');
@@ -70,15 +78,6 @@ const ProfileScreen = ({books}) => {
     }
   }
 
-  // Helper function that finds the user's read books and returns them in array form 
-  function getReadBooksArray(){
-    const readBooks = [];
-    const size = user.read.length;
-    for (let i = 0; i <= size - 1; i++) {
-      readBooks.push(books.filter(x => x.title === bookArray[i]))
-    }
-    return (readBooks)
-}
     const handleSignOut = () => {
         auth
           .signOut()

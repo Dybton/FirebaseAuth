@@ -3,11 +3,24 @@ import { StyleSheet, Text, Touchable, View, TouchableOpacity, Alert } from 'reac
 import BookDetailComponent from '../components/BookDetailComponent';
 import theme from '../assets/themes';
 import { useNavigation } from '@react-navigation/native';
+import { auth, db, arrayUnion, FieldValue} from '../firebase';
+import * as firebase from 'firebase'; // Is there a way to import this without having to get everything down?
 
 
 const BookDetailScreen = ({route}) => {
-    const book = route.params;
+    const { book, user } = route.params;
     const navigation = useNavigation();
+
+
+    const addBook = () => {
+        db.collection('userObjects').doc(user.uid).update({
+            reading: firebase.firestore.FieldValue.arrayUnion({
+                title: book.title,
+                page: 0,
+            })
+        })
+        showAlert();
+    }
 
     const showAlert = () => {
         Alert.alert(  
@@ -21,11 +34,11 @@ const BookDetailScreen = ({route}) => {
 
     return (
         <View style={styles.container}>
-            <Text> Title: {book.book.title} </Text>
-            <Text> Author: {book.book.author} </Text>
-            <Text> Id: {book.book.id} </Text>
+            <Text> Title: {book.title} </Text>
+            <Text> Author: {book.author} </Text>
+            <Text> Id: {book.id} </Text>
             <TouchableOpacity
-            onPress={() => {showAlert()}}
+            onPress={() => {addBook()}}
             style={styles.button}
             >
                 <Text style={styles.buttonText}>Add Book</Text>

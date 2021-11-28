@@ -15,7 +15,7 @@ const HomeScreen = ({navigation, books, user}) => {
     </View>
     <Separator/>
     <View>
-      <Books books={books}/>
+      <Books books={books} user={user}/>
     </View>
     </View>
   )

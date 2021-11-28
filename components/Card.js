@@ -3,7 +3,7 @@ import { ImageBackground, Pressable, StyleSheet, Text, View } from 'react-native
 import theme from '../assets/themes'
 import { useNavigation } from '@react-navigation/native';
 
-    const Card = ({item, sender}) => {
+    const Card = ({item, user}) => {
         const navigation = useNavigation();
         
         return (
@@ -11,7 +11,10 @@ import { useNavigation } from '@react-navigation/native';
                 source={item.background}
                 style={styles.ImageBackground}
             >
-                <Pressable onPress={() => navigation.navigate('Book Detail', {book: item})}>
+                <Pressable onPress={() => navigation.navigate('Book Detail', {
+                    book: item,
+                    user: user,
+                    })}>
                     <View style={styles.imageContentContainer}>
                         <Text style={styles.imageTitle}> {item.title} </Text>
                         <Text style={styles.imageSubtitle}> {`Written by ${item.author}`} </Text>
