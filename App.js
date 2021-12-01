@@ -164,8 +164,8 @@ export default function App() {
       />
       <Tabs.Screen
         name="Study"
-        component={StudyStackScreen}
-        // options={{ headerShown: false }}
+        children={()=><StudyStackScreen books={books} user={user}/>}
+        options={{ headerShown: false }}
       />
       <Tabs.Screen
         name="Profile"
@@ -191,10 +191,14 @@ export default function App() {
   }
   
   // This navigator handles the study part
-  function StudyStackScreen() {
+  function StudyStackScreen({books, user}) {
     return (
       <StudyStack.Navigator>
-        <StudyStack.Screen name="Progress" component={ProgressScreen} />
+        <StudyStack.Screen 
+          name="Progress" 
+          children={()=><ProgressScreen books={books} user={user}/>}
+          options={{ headerShown: false }}
+          />
         <StudyStack.Screen name="StudyQuestions" component={StudyScreen}/>
       </StudyStack.Navigator>
     );

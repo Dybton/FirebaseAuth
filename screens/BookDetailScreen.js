@@ -12,15 +12,40 @@ const BookDetailScreen = ({route}) => {
     const navigation = useNavigation();
 
 
+
+    // Check if book is allready in user.reading
+    // if that's the case show alert, "book allready in library"
+    // If that the case, add the book and alert "book added"
+    // console.log(user.reading)
+    // We need to loop over users.reading and check if the title matches the specific book.
+
+    
+
     const addBook = () => {
-        db.collection('userObjects').doc(user.uid).update({
-            reading: firebase.firestore.FieldValue.arrayUnion({
-                title: book.title,
-                page: 0,
-            })
-        })
-        showAlert();
+        if(checkIfBookIsInLibrary()) {
+            showAlertError();
+        } else {
+            db.collection('userObjects').doc(user.uid).update({
+                reading: firebase.firestore.FieldValue.arrayUnion({
+                    title: book.title,
+                    page: 0,
+                })
+            }).catch(error => alert(error.message))
+            showAlert();
+        }
     }
+
+    const checkIfBookIsInLibrary = () => {
+        let bookInLibrary = false;
+        user.reading.forEach(element => {
+            if (element.title == book.title) {
+                bookInLibrary = true;
+            }
+        });
+        return bookInLibrary;
+      }
+
+    console.log(checkIfBookIsInLibrary())
 
     const showAlert = () => {
         Alert.alert(  
@@ -31,6 +56,18 @@ const BookDetailScreen = ({route}) => {
             ]  
         );  
     }
+
+    const showAlertError = () => {
+        Alert.alert(  
+            'Already in Library', 
+            '',  
+            [   
+                {text: 'OK', onPress: () => navigation.goBack()},  
+            ]  
+        );  
+    }
+
+     
 
     return (
         <View style={styles.container}>

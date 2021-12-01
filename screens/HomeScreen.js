@@ -6,7 +6,7 @@ import Separator from '../components/Separator'
 import { auth, db } from '../firebase';
 import bookPage from '../assets/data/bookPage';
 
-const HomeScreen = ({navigation, books, user}) => {
+const HomeScreen = ({books, user}) => {
 
   return (
     <View>

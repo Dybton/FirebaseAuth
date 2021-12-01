@@ -10,28 +10,36 @@ import { useNavigation, useFocusEffect } from '@react-navigation/native';
 
 const ProfileScreen = ({books}) => {
   const navigation = useNavigation();
-  const [user, setUser] = useState([{id: 1, title: 'Loading', author: 'Loading', name: 'Loading' }]); // Dummy object
+  const [user, setUser] = useState([{id: 1, title: 'Loading', author: 'Loading', name: 'Loading'}]); // Dummy object
   const [Loaded, setLoaded] = useState(false);
   const [finishedBooks, setFinishedBooks] = useState([]);
   const [booksInProgress, setBooksInProgress] = useState([]);
   const [sender, setSender] = useState('profile');
+  const [userStatus, setUserStatus] = useState([{reading: 'Loading'}]); // Dummy object
+  const [status, setStatus] = useState('false')
 
   // Calling the getMethods when the page loads, or when the page is rerendered. 
   useEffect(() => {
     function fetchData(){
       getUser();
+      getUserStatus();
     }
     fetchData();
+  }, [Loaded, status])
 
-  }, [Loaded])
+  const getUserStatus = () => {
+    db.collection('userObjects').where("uid", "==", auth.currentUser.uid).onSnapshot(snapshot => (
+      setUserStatus(
+            snapshot.docs.map((doc) => ({id: doc.id, ...doc.data()})))
+    ))
+  }
 
   useFocusEffect(
     React.useCallback(() => {
+      setStatus(userStatus[0].reading)
     })
   );
-
-  // Maybe if I change the getUser to a listener instead?
-
+  
   const getUser = async () => {
     const userRef = db.collection('userObjects');
     try {

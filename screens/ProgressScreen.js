@@ -1,16 +1,32 @@
-import React from 'react'
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
+import { StyleSheet, Text, View, TouchableOpacity, Button} from 'react-native'
+import React, { useState } from 'react';
 
-const ProgressScreen = ({navigation}) => {
+const ProgressScreen = ({navigation, books, user}) => {
+  const [bookIndex, setBookIndex] = useState(0)
+  
+  const nextBook = (() => {
+    if (bookIndex < books.length - 1) {
+      setBookIndex(bookIndex + 1)
+    }
+  })
+
     return (
-        <View style={styles.container}>
-            <Text>ProgressScreen</Text>
-            <TouchableOpacity onPress={()=> navigation.navigate("StudyQuestions")}>
-                <Text> Study </Text>
-            </TouchableOpacity>
-        </View>
-    )
-}
+      <View style={styles.container}>
+          <Text> {books[bookIndex].title} </Text>
+          <Text> {books[bookIndex].author} </Text>
+          <Text> How far have you read? </Text> 
+          <Button title="Next" onPress={() => nextBook()} />
+          {/* <TouchableOpacity title="Study!" onPress={() => navigation.navigate('StudyQuestions')} /> */}
+          <View>
+            {/* <WheelPicker
+            pages={10}
+            currentProgress={3}
+            />  */}
+          </View>
+          
+      </View>   
+    );
+};
 
 export default ProgressScreen
 
