@@ -3,11 +3,11 @@ import { StyleSheet, Text, Touchable, View, TouchableOpacity, Alert } from 'reac
 import BookDetailComponent from '../components/BookDetailComponent';
 import theme from '../assets/themes';
 import { useNavigation } from '@react-navigation/native';
-import { auth, db, arrayUnion, FieldValue} from '../firebase';
+import { auth, db, arrayUnion, FieldValue } from '../firebase';
 import * as firebase from 'firebase'; // Is there a way to import this without having to get everything down?
 
 
-const BookDetailScreen = ({route}) => {
+const BookDetailScreen = ({ route }) => {
     const { book, user } = route.params;
     const navigation = useNavigation();
 
@@ -19,10 +19,10 @@ const BookDetailScreen = ({route}) => {
     // console.log(user.reading)
     // We need to loop over users.reading and check if the title matches the specific book.
 
-    
+
 
     const addBook = () => {
-        if(checkIfBookIsInLibrary()) {
+        if (checkIfBookIsInLibrary()) {
             showAlertError();
         } else {
             db.collection('userObjects').doc(user.uid).update({
@@ -43,31 +43,30 @@ const BookDetailScreen = ({route}) => {
             }
         });
         return bookInLibrary;
-      }
+    }
 
     console.log(checkIfBookIsInLibrary())
 
     const showAlert = () => {
-        Alert.alert(  
-            'Book Added',  
-            '',  
-            [   
-                {text: 'OK', onPress: () => navigation.goBack()},  
-            ]  
-        );  
+        Alert.alert(
+            'Book Added',
+            '',
+            [
+                { text: 'OK', onPress: () => navigation.goBack() },
+            ]
+        );
     }
 
     const showAlertError = () => {
-        Alert.alert(  
-            'Already in Library', 
-            '',  
-            [   
-                {text: 'OK', onPress: () => navigation.goBack()},  
-            ]  
-        );  
+        Alert.alert(
+            'Already in Library',
+            '',
+            [
+                { text: 'OK', onPress: () => navigation.goBack() },
+            ]
+        );
     }
 
-     
 
     return (
         <View style={styles.container}>
@@ -75,8 +74,8 @@ const BookDetailScreen = ({route}) => {
             <Text> Author: {book.author} </Text>
             <Text> Id: {book.id} </Text>
             <TouchableOpacity
-            onPress={() => {addBook()}}
-            style={styles.button}
+                onPress={() => { addBook() }}
+                style={styles.button}
             >
                 <Text style={styles.buttonText}>Add Book</Text>
             </TouchableOpacity>
@@ -100,11 +99,11 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         alignItems: 'center',
         marginTop: 40,
-      },
-      buttonText: {
+    },
+    buttonText: {
         color: 'white',
         fontWeight: '700',
         fontSize: 16,
-      }
     }
+}
 )
