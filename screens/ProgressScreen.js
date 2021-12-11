@@ -1,49 +1,38 @@
 import { StyleSheet, Text, View, TouchableOpacity, Button } from 'react-native'
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import WheelPicker from '../components/WheelPicker';
 
 const ProgressScreen = ({ navigation, books, user }) => {
   const [bookIndex, setBookIndex] = useState(0)
 
+  const pickerRef = useRef();
+
+  /**
+   * Pickerref is a function in the WheelPicker component (child). It only runs when bookIndex changes
+   */
+  useEffect(() => {
+    pickerRef.current()
+  }, [bookIndex])
+
+  /** Function that updates the bookIndex */
   const nextBook = (() => {
     if (bookIndex < books.length - 1) {
       setBookIndex(bookIndex + 1)
     }
   })
 
-  function handleChange(index) {
-    if (!startedToScroll) {
-      setStartedToScroll(true);
-    }
-    setIndexSelected(index);
-  }
-
-  console.log(books[bookIndex].pageNumber);
-
   return (
     <View style={styles.container}>
-
-
       <Text> {books[bookIndex].title} </Text>
-      <Text>  </Text>
       <Text> {books[bookIndex].author} </Text>
       <Text> How far have you read? </Text>
-      <WheelPicker
+      <WheelPicker pickerRef={pickerRef}
         pages={books[bookIndex].pageNumber}
-        currentProgress={12}
+        currentProgress={books[bookIndex].pageNumber - 10}
       />
-
-      {/* The current progress needs to take the books reading length */}
-      {/* On next it needs to update the current progress */}
-
-
-
       <Button title="Next" onPress={() => nextBook()} />
-      {/* <TouchableOpacity title="Study!" onPress={() => navigation.navigate('StudyQuestions')} /> */}
       <View>
-
       </View>
-
     </View>
   );
 };
