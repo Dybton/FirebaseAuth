@@ -28,7 +28,7 @@ const BookDetailScreen = ({ route }) => {
             db.collection('userObjects').doc(user.uid).update({
                 reading: firebase.firestore.FieldValue.arrayUnion({
                     title: book.title,
-                    page: 0,
+                    page: 1,
                 })
             }).catch(error => alert(error.message))
             showAlert();
