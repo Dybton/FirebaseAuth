@@ -1,7 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { LoginMethod, auth, db} from './firebase';
+import { LoginMethod, auth, db } from './firebase';
 
 // Importing React Navigation V5
 import { NavigationContainer } from '@react-navigation/native';
@@ -9,7 +9,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 // Import Async
-import {AsyncStorage } from 'react-native';
+import { AsyncStorage } from 'react-native';
 
 // Import Fonts, icons and themes
 // import Feather from '@expo/vector-icons/Feather'
@@ -49,7 +49,7 @@ export default function App() {
   // Async Storage States 
   const [isFirstLaunch, setIsFirstLaunch] = useState('')
   const [statusKeyLoaded, setStatusKeyLoaded] = useState(false)
-  
+
 
   // Every time page loads it checks if it's first launch or not.
   useEffect(() => {
@@ -59,7 +59,7 @@ export default function App() {
   // Async Storage Methods
   async function checkIfFirstLaunch() {
     AsyncStorage.getItem('alreadyLaunched').then(value => {
-      if(value == null) {
+      if (value == null) {
         AsyncStorage.setItem('alreadyLaunched', 'true')
         setIsFirstLaunch(true);
         setStatusKeyLoaded(true)
@@ -74,28 +74,28 @@ export default function App() {
   const remove = async () => {
     try {
       await AsyncStorage.removeItem('alreadyLaunched')
-    } catch(err)  {
+    } catch (err) {
       alert(err)
     }
   }
 
   // Condition for the different navigators.
-  if ( statusKeyLoaded === false ) {
+  if (statusKeyLoaded === false) {
     return (
-      null 
+      null
     )
-  } else if ( isFirstLaunch === null ) {
+  } else if (isFirstLaunch === null) {
     return null;
-  } else if(isFirstLaunch === true ) {
+  } else if (isFirstLaunch === true) {
     return (
       // OnboardingStack:
       // Refactor this so there's no duplicate code
       <NavigationContainer theme={MyTheme}>
-        <OnboardingStack.Navigator initialRouteName={OnboardingScreen} screenOptions={{headerShown: false }}>
-          <OnboardingStack.Screen name="Onboarding" component ={OnboardingScreen} />
+        <OnboardingStack.Navigator initialRouteName={OnboardingScreen} screenOptions={{ headerShown: false }}>
+          <OnboardingStack.Screen name="Onboarding" component={OnboardingScreen} />
           <OnboardingStack.Screen name="Loading" component={LoadingScreen} />
           <OnboardingStack.Screen name="Login" component={LoginScreen} />
-          <OnboardingStack.Screen name="HomeTab" component={TabsScreen}/>
+          <OnboardingStack.Screen name="HomeTab" component={TabsScreen} />
         </OnboardingStack.Navigator>
       </NavigationContainer>
 
@@ -105,8 +105,8 @@ export default function App() {
       // LoginStack
       // Refactor this so there's no duplicate code
       <NavigationContainer theme={MyTheme}>
-        <LoginStack.Navigator initialRouteName={LoadingScreen} screenOptions={{headerShown: false }}>
-          <LoginStack.Screen name="Loading" component={LoadingScreen}/>
+        <LoginStack.Navigator initialRouteName={LoadingScreen} screenOptions={{ headerShown: false }}>
+          <LoginStack.Screen name="Loading" component={LoadingScreen} />
           <LoginStack.Screen name="Login" component={LoginScreen} />
           <LoginStack.Screen name="HomeTab" component={TabsScreen} />
         </LoginStack.Navigator>
@@ -115,94 +115,99 @@ export default function App() {
   }
 }
 
-  // Create the Tab Screen navigation. 
-  // To do: Get find new icons
-  function TabsScreen() {
-    const [books, setBooks] = useState([]);
-    const [user, setUser] = useState([]);
+// Create the Tab Screen navigation. 
+// To do: Get find new icons
+function TabsScreen() {
+  const [books, setBooks] = useState([]);
+  const [user, setUser] = useState([]);
 
-    // call the db methods I need
-    useEffect(() => {
-      function fetchData(){
-        getUser();
-        getBooks();
-      }
-      fetchData();
-    },[])
+  // call the db methods I need
+  useEffect(() => {
+    function fetchData() {
+      getUser(); // would it be possible to just pass getUser? 
+      getBooks();
+    }
+    fetchData();
+  }, [])
 
   // Defining the different get Methods 
 
-    // Get the Books
-    const getBooks = () => {
-      db.collection('books').onSnapshot(snapshot => (
-          setBooks(
-              snapshot.docs.map((doc) => ({id: doc.id, ...doc.data()})))
-      ))
-    }
+  // Get the Books
+  const getBooks = () => {
+    db.collection('books').onSnapshot(snapshot => (
+      setBooks(
+        snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })))
+    ))
+  }
 
   // Get the user object - should be a get method
-    const getUser = async () => {
-      const userRef = db.collection('userObjects');
-      try {
-        const users = await userRef.where("uid", "==", auth.currentUser.uid).get();
-        for(const doc of users.docs){
-          const data = doc.data();
-          setUser(data)
-        }
-      } catch(err) {
-        alert(err)
+  const getUser = async () => {
+    const userRef = db.collection('userObjects');
+    try {
+      const users = await userRef.where("uid", "==", auth.currentUser.uid).get();
+      for (const doc of users.docs) {
+        const data = doc.data();
+        setUser(data)
       }
+    } catch (err) {
+      alert(err)
     }
+  }
 
-    return (
-      <Tabs.Navigator>
+
+
+  return (
+    <Tabs.Navigator>
       <Tabs.Screen
         name="Home"
         options={{ headerShown: false }}
-        children={()=><HomeStackScreen books={books} user={user}/>}
-        
+        children={() => <HomeStackScreen books={books} user={user} parentFunc={getUser} />}
       />
+
       <Tabs.Screen
         name="Study"
-        children={()=><StudyStackScreen books={books} user={user}/>}
+        children={() => <StudyStackScreen books={books} user={user} parentFunc={getUser} />}
         options={{ headerShown: false }}
       />
+
       <Tabs.Screen
         name="Profile"
-        children={()=><ProfileScreen books={books}/>}
+        children={() => <ProfileScreen books={books} />}
         options={{ headerShown: false }}
       />
-    </Tabs.Navigator>
-    );
-  }
 
-  // This navigator handles the home and book part
-  function HomeStackScreen({books, user}) {
-    return (
-      <HomeStack.Navigator>
-        <HomeStack.Screen 
-            name="HomeStack" 
-            children={()=><HomeScreen books={books} user={user}/>}
-            options={{ headerShown: false }}
-            />
-        <HomeStack.Screen name="Book Detail" component={BookDetailScreen} />
-      </HomeStack.Navigator>
-    );
-  }
-  
-  // This navigator handles the study part
-  function StudyStackScreen({books, user}) {
-    return (
-      <StudyStack.Navigator>
-        <StudyStack.Screen 
-          name="Progress" 
-          children={()=><ProgressScreen books={books} user={user}/>}
-          options={{ headerShown: false }}
-          />
-        <StudyStack.Screen name="StudyQuestions" component={StudyScreen}/>
-      </StudyStack.Navigator>
-    );
-  }
+    </Tabs.Navigator>
+  );
+}
+
+// This navigator handles the home and book part
+function HomeStackScreen({ books, user, parentFunc }) {
+  return (
+    <HomeStack.Navigator>
+      <HomeStack.Screen
+        name="HomeStack"
+        children={() => <HomeScreen books={books} user={user} parentFunc={parentFunc} />}
+        options={{ headerShown: false }}
+      />
+      <HomeStack.Screen
+        name="Book Detail" component={BookDetailScreen} options={{ headerShown: false }} />
+    </HomeStack.Navigator>
+  );
+}
+
+// This navigator handles the study part
+function StudyStackScreen({ books, user, parentFunc }) {
+  return (
+    <StudyStack.Navigator>
+      <StudyStack.Screen
+        name="Progress"
+        children={() => <ProgressScreen books={books} user={user} parentFunc={parentFunc} />}
+        options={{ headerShown: false }}
+      />
+      <StudyStack.Screen name="StudyQuestions" component={StudyScreen} />
+    </StudyStack.Navigator>
+  );
+}
 
 const styles = StyleSheet.create({
   container: {

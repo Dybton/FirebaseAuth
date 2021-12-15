@@ -1,35 +1,46 @@
-import React from 'react'
-import { StyleSheet, Text, View } from 'react-native'
-import theme from '../assets/themes'
-import { auth } from '../firebase'
+import React, { useState } from "react";
+import { View, Text, Button, StyleSheet, TouchableOpacity, Image, TouchableOpacityBase, Animated } from 'react-native';
+
+import FlipComponent from '../components/FlipComponent';
+import LargeButton from "../components/buttons/LargeButton";
+import SmallButton from "../components/buttons/SmallButton";
+
+// Firebase
+import firebase from 'firebase/app'
+import 'firebase/firestore'
 
 const StudyScreen = () => {
-    return (
-        <View style={styles.container}>
-            <Text>Study</Text>
-        </View>
-    )
-}
+  // states
+  const [cards, setCards] = useState([]);
+  const [studyCards, setStudyCards] = useState([]);
 
-export default StudyScreen
+  function mjello() {
+    console.log("mjello")
+  }
+
+  return (
+    <View>
+      <FlipComponent />
+      {/* <StepIndicatorFunction /> */}
+
+      <View style={styles.container}>
+        <SmallButton title={"Yes"} />
+        <SmallButton title={"No"} />
+      </View>
+      <View style={styles.container}>
+        <LargeButton title={"Continue"} />
+      </View>
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
-    },
-     button: {
-      backgroundColor: '#0782F9',
-      width: '60%',
-      padding: 15,
-      borderRadius: 10,
-      alignItems: 'center',
-      marginTop: 40,
-    },
-    buttonText: {
-      color: 'white',
-      fontWeight: '700',
-      fontSize: 16,
-    },
-  })
+  container: {
+    alignItems: 'center',
+    flexDirection: "row",
+  }
+});
+
+export default StudyScreen;
+
+

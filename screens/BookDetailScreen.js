@@ -8,18 +8,8 @@ import * as firebase from 'firebase'; // Is there a way to import this without h
 
 
 const BookDetailScreen = ({ route }) => {
-    const { book, user } = route.params;
+    const { book, user, parentFunc } = route.params;
     const navigation = useNavigation();
-
-
-
-    // Check if book is allready in user.reading
-    // if that's the case show alert, "book allready in library"
-    // If that the case, add the book and alert "book added"
-    // console.log(user.reading)
-    // We need to loop over users.reading and check if the title matches the specific book.
-
-
 
     const addBook = () => {
         if (checkIfBookIsInLibrary()) {
@@ -28,9 +18,10 @@ const BookDetailScreen = ({ route }) => {
             db.collection('userObjects').doc(user.uid).update({
                 reading: firebase.firestore.FieldValue.arrayUnion({
                     title: book.title,
-                    page: 1,
+                    page: 0,
                 })
             }).catch(error => alert(error.message))
+            parentFunc();
             showAlert();
         }
     }

@@ -6,17 +6,17 @@ import Separator from '../components/Separator'
 import { auth, db } from '../firebase';
 import bookPage from '../assets/data/bookPage';
 
-const HomeScreen = ({books, user}) => {
+const HomeScreen = ({ books, user, parentFunc }) => {
 
   return (
     <View>
-    <View style={styles.headerContainer}>
-    <Text style={styles.headerText}> Welcome {user.name}</Text>
-    </View>
-    <Separator/>
-    <View>
-      <Books books={books} user={user}/>
-    </View>
+      <View style={styles.headerContainer}>
+        <Text style={styles.headerText}> Welcome {user.name}</Text>
+      </View>
+      <Separator />
+      <View>
+        <Books books={books} user={user} parentFunc={parentFunc} />
+      </View>
     </View>
   )
 }
@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center'
   },
-   button: {
+  button: {
     backgroundColor: '#0782F9',
     width: '60%',
     padding: 15,

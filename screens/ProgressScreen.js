@@ -1,8 +1,12 @@
 import { StyleSheet, Text, View, TouchableOpacity, Button } from 'react-native'
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import WheelPicker from '../components/WheelPicker';
+import { db } from '../firebase';
+import { useNavigation } from '@react-navigation/native';
 
-const ProgressScreen = ({ navigation, books, user }) => {
+
+const ProgressScreen = ({ books, user, parentFunc }) => {
+  const navigation = useNavigation();
   const [bookIndex, setBookIndex] = useState(0)
   const [lastBook, setLastBook] = useState(false)
 
@@ -17,14 +21,11 @@ const ProgressScreen = ({ navigation, books, user }) => {
 
   /** Function that updates the bookIndex */
   const nextBook = (() => {
-    console.log("books length " + books.length)
-    console.log("bookIndex " + bookIndex)
-    if (bookIndex < books.length - 1) {
+    if (bookIndex < user.reading.length - 1) {
       setBookIndex(bookIndex + 1)
     }
-    if (bookIndex === books.length - 1) {
+    if (bookIndex === user.reading.length - 1) {
       setLastBook(true)
-
     }
   })
 
@@ -32,16 +33,36 @@ const ProgressScreen = ({ navigation, books, user }) => {
   const callback = useCallback((selectedItem) => {
     if (bookIndex !== 0 && !lastBook) {
       console.log("the you have reached page " + selectedItem + " in the book " + books[(bookIndex - 1)].title)
+      updatePage(selectedItem, (bookIndex - 1))
     } if (lastBook) {
       console.log("the you have reached page " + selectedItem + " in the book " + books[(bookIndex)].title)
+      updatePage(selectedItem, bookIndex)
+      navigation.navigate("StudyQuestions");
     }
-
-    // if (bookIndex === 0) { }
-    // console.log("selectedItem " + selectedItem)
-    // if (bookIndex !== 0) {
-    //   console.log(books[(bookIndex - 1)].title)
-    // }
   });
+
+  // So now I need to use the data above to update the userObject.
+  // Create a helper function, and pass in the data
+  // Take an input from the useCallBack func, the bookIndex and the selected item
+  // we have the index, so we need to say => update page: with selected item, for the book which has index x
+
+  // I need to get all the 
+
+  const updatePage = (pageProgress, index) => {
+    parentFunc();
+    const reading = user.reading
+    const objectToChange = reading[index];
+    objectToChange.page = pageProgress;
+    console.log(objectToChange)
+    console.log(reading);
+
+    db.collection("userObjects").doc(user.uid).update({
+      reading: reading
+    }).then(function () {
+      console.log("Page updated");
+    });
+  }
+
 
   return (
     <View style={styles.container}>
