@@ -6,6 +6,8 @@ import Separator from '../components/Separator'
 import { auth, db } from '../firebase';
 import bookPage from '../assets/data/bookPage';
 
+
+
 const HomeScreen = ({ books, user, parentFunc }) => {
 
   return (
@@ -49,7 +51,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   headerText: {
-    color: 'black',
+    color: 'white',
     fontWeight: '400',
     fontSize: 30,
   }

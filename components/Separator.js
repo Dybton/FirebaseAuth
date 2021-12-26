@@ -13,10 +13,10 @@ const Separator = () => {
 export default Separator
 
 const styles = StyleSheet.create({
-    separator:{
+    separator: {
         marginTop: theme.spacing.m,
         marginHorizontal: theme.spacing.m,
         height: 1,
-        backgroundColor: "#000000"
+        backgroundColor: "#FFFFFF"
     },
 })

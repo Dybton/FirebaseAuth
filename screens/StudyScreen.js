@@ -20,11 +20,12 @@ const StudyScreen = () => {
 
   return (
     <View>
-      <FlipComponent />
-      {/* <StepIndicatorFunction /> */}
-
       <View style={styles.container}>
-        <SmallButton title={"Yes"} />
+        <FlipComponent />
+        {/* <StepIndicatorFunction /> */}
+      </View>
+      <View style={styles.container}>
+        <SmallButton title={"Yes"} style={styles.leftButton} />
         <SmallButton title={"No"} />
       </View>
       <View style={styles.container}>
@@ -36,8 +37,12 @@ const StudyScreen = () => {
 
 const styles = StyleSheet.create({
   container: {
-    alignItems: 'center',
+    // alignItems: 'center',
     flexDirection: "row",
+    justifyContent: 'space-around',
+  },
+  leftButton: {
+    marginRight: 100,
   }
 });
 

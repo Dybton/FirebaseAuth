@@ -43,11 +43,11 @@ const styles = StyleSheet.create({
     },
     imageTitle: {
         ...theme.textVariants.h1,
-        // color: theme.colors.white,
+        color: theme.colors.white,
     },
     imageSubtitle: {
         ...theme.textVariants.body2,
-        // color: theme.colors.white
+        color: theme.colors.white
     }
 
 })

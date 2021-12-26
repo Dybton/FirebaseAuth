@@ -16,6 +16,13 @@ import { AsyncStorage } from 'react-native';
 import AppLoading from 'expo-app-loading';
 import * as Font from 'expo-font';
 import { DefaultTheme } from '@react-navigation/native';
+import { Ionicons } from '@expo/vector-icons';
+import { Entypo } from '@expo/vector-icons';
+
+
+
+
+
 
 //Import Screens
 import LoginScreen from './screens/LoginScreen';
@@ -40,7 +47,7 @@ const MyTheme = {
   ...DefaultTheme,
   colors: {
     ...DefaultTheme.colors,
-    background: '#FAFAFA'
+    background: '#132961'
   },
 };
 
@@ -154,10 +161,37 @@ function TabsScreen() {
     }
   }
 
-
-
   return (
-    <Tabs.Navigator>
+    <Tabs.Navigator
+      screenOptions={({ route }) => ({
+        tabBarIcon: ({ focused, color, size }) => {
+          let iconName;
+
+          if (route.name === 'Home') {
+            iconName = 'home';
+          } else if (route.name === 'Study') {
+            iconName = 'book'
+          } else if (route.name === 'Profile') {
+            iconName = 'person';
+          }
+
+          // You can return any component that you like here!
+          return <Ionicons name={iconName} size={size} color={color} />;
+        },
+        headerShown: false,
+        tabBarActiveTintColor: '#68E2B1',
+        tabBarInactiveTintColor: 'white',
+        tabBarStyle: {
+          height: 90,
+          paddingHorizontal: 5,
+          paddingTop: 10,
+          backgroundColor: '#132961',
+          position: 'absolute',
+          borderTopWidth: 1,
+          borderTopColor: '#949EB7',
+        }
+      })}
+    >
       <Tabs.Screen
         name="Home"
         options={{ headerShown: false }}
