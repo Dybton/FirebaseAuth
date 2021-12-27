@@ -238,7 +238,7 @@ function StudyStackScreen({ books, user, parentFunc }) {
         children={() => <ProgressScreen books={books} user={user} parentFunc={parentFunc} />}
         options={{ headerShown: false }}
       />
-      <StudyStack.Screen name="StudyQuestions" component={StudyScreen} />
+      <StudyStack.Screen name="StudyQuestions" component={StudyScreen} options={{ headerShown: false }} />
     </StudyStack.Navigator>
   );
 }

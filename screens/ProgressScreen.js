@@ -3,6 +3,7 @@ import React, { useState, useRef, useEffect, useCallback } from 'react';
 import WheelPicker from '../components/WheelPicker';
 import { db } from '../firebase';
 import { useNavigation } from '@react-navigation/native';
+import theme from '../assets/themes'
 
 
 const ProgressScreen = ({ books, user, parentFunc }) => {
@@ -66,9 +67,9 @@ const ProgressScreen = ({ books, user, parentFunc }) => {
 
   return (
     <View style={styles.container}>
-      <Text> {books[bookIndex].title} </Text>
-      <Text> {books[bookIndex].author} </Text>
-      <Text> How far have you read? </Text>
+      <Text style={styles.imageTitle}> {books[bookIndex].title} </Text>
+      <Text style={styles.imageSubtitle}> {books[bookIndex].author} </Text>
+      <Text style={styles.imageSubtitle}> How far have you read? </Text>
       <WheelPicker pickerRef={pickerRef}
         pages={books[bookIndex].pageNumber}
         currentProgress={user.reading[bookIndex].page}
@@ -107,5 +108,12 @@ const styles = StyleSheet.create({
     color: 'white',
     fontWeight: '700',
     fontSize: 16,
+  }, imageTitle: {
+    ...theme.textVariants.h1,
+    color: theme.colors.white,
   },
+  imageSubtitle: {
+    ...theme.textVariants.body2,
+    color: theme.colors.white
+  }
 })
