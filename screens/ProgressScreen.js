@@ -1,9 +1,63 @@
 import { StyleSheet, Text, View, TouchableOpacity, Button } from 'react-native'
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import WheelPicker from '../components/WheelPicker';
-import { db } from '../firebase';
+import { db, auth, Timestamp } from '../firebase';
+import * as firebase from 'firebase'; // Is there a way to import this without having to get everything down?
 import { useNavigation } from '@react-navigation/native';
 import theme from '../assets/themes'
+
+
+
+// We need to get all the cards, where page < selected item (page nr)
+// I won't get it real time
+
+// I need to do it for all the books
+
+
+// Get the user object - should be a get method
+const getCards = async (book, page) => {
+  const cardRef = db.collection('cards').where("book", "==", book);
+  try {
+    const cards = await cardRef.get();
+    for (const doc of cards.docs) {
+      const data = doc.data();
+      if (page >= data.page) {
+        setUserCard(data.cardID, book)
+
+        // create the userCard
+      }
+    }
+  } catch (err) {
+    alert(err)
+  }
+}
+
+// Creates a userCard in firestore
+const setUserCard = async (cardID, book) => {
+  const userCardId = auth.currentUser.uid + "_" + cardID;
+  db.collection("userCards").doc(userCardId).set({
+    book: book,
+    cardID: cardID,
+    userID: auth.currentUser.uid,
+    nextReview: firebase.firestore.FieldValue.serverTimestamp(),
+  })
+}
+
+
+
+// const getUser = async () => {
+//   const userRef = db.collection('userObjects');
+//   try {
+//     const users = await userRef.where("uid", "==", auth.currentUser.uid).get();
+//     for (const doc of users.docs) {
+//       const data = doc.data();
+//       setUser(data)
+//     }
+//   } catch (err) {
+//     alert(err)
+//   }
+// }
+
 
 
 const ProgressScreen = ({ books, user, parentFunc }) => {
@@ -33,14 +87,17 @@ const ProgressScreen = ({ books, user, parentFunc }) => {
   // This is only called when bookIndex is updated
   const callback = useCallback((selectedItem) => {
     if (bookIndex !== 0 && !lastBook) {
-      console.log("the you have reached page " + selectedItem + " in the book " + books[(bookIndex - 1)].title)
+      getCards(books[(bookIndex - 1)].title, selectedItem)
+      // console.log("the you have reached page " + selectedItem + " in the book " + books[(bookIndex - 1)].title)
       updatePage(selectedItem, (bookIndex - 1))
     } if (lastBook) {
-      console.log("the you have reached page " + selectedItem + " in the book " + books[(bookIndex)].title)
+      getCards(books[(bookIndex)].title, selectedItem)
+      // console.log("the you have reached page " + selectedItem + " in the book " + books[(bookIndex)].title)
       updatePage(selectedItem, bookIndex)
       navigation.navigate("StudyQuestions");
     }
   });
+
 
   // So now I need to use the data above to update the userObject.
   // Create a helper function, and pass in the data
@@ -54,8 +111,8 @@ const ProgressScreen = ({ books, user, parentFunc }) => {
     const reading = user.reading
     const objectToChange = reading[index];
     objectToChange.page = pageProgress;
-    console.log(objectToChange)
-    console.log(reading);
+    // console.log(objectToChange)
+    // console.log(reading);
 
     db.collection("userObjects").doc(user.uid).update({
       reading: reading

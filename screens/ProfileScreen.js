@@ -5,6 +5,7 @@ import React, { useState, useEffect } from 'react';
 import ProfileComponent from '../components/ProfileComponent';
 import UserBooksComponent from '../components/UserBooksComponent';
 import { isLoaded } from 'expo-font';
+import theme from '../assets/themes'
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 // How can I pass data to this screen from homeScreen?
 
@@ -149,7 +150,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   headerText: {
-    color: 'black',
+    color: theme.colors.white,
     fontWeight: '400',
     fontSize: 30,
   }, buttonContainer: {

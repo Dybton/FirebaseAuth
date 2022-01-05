@@ -1,7 +1,7 @@
 import React from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 
-const ReadingBooksComponent = ({user}) => {
+const ReadingBooksComponent = ({ user }) => {
     return (
         <View>
             <Text>ReadingBooksComponent</Text>

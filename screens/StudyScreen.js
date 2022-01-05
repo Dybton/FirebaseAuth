@@ -13,6 +13,8 @@ import StepIndicatorFunction from '../components/StepIndicator';
 import firebase from 'firebase/app'
 import 'firebase/firestore'
 
+var today = new Date();
+
 const StudyScreen = () => {
   // Once the card is clicked, the middle components are ungreyed, once you've pressed continue, the next card is ungreyed and clickable
 
