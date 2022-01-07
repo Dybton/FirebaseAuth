@@ -22,9 +22,8 @@ const getCards = async (book, page) => {
     for (const doc of cards.docs) {
       const data = doc.data();
       if (page >= data.page) {
-        setUserCard(data.cardID, book)
+        setUserCard(data)
 
-        // create the userCard
       }
     }
   } catch (err) {
@@ -33,31 +32,26 @@ const getCards = async (book, page) => {
 }
 
 // Creates a userCard in firestore
-const setUserCard = async (cardID, book) => {
-  const userCardId = auth.currentUser.uid + "_" + cardID;
-  db.collection("userCards").doc(userCardId).set({
-    book: book,
-    cardID: cardID,
-    userID: auth.currentUser.uid,
-    nextReview: firebase.firestore.FieldValue.serverTimestamp(),
-  })
+const setUserCard = async (data) => {
+  const userCardId = auth.currentUser.uid + "_" + data.cardID;
+  const userCardRef = db.collection("userCards").doc(userCardId);
+  const document = await userCardRef.get();
+  try {
+    document.data().cardID
+    console.log("Document exists")
+  } catch (error) {
+    console.log("Document does not exists")
+    userCardRef.set({
+      book: data.book,
+      cardID: data.cardID,
+      question: data.question,
+      answer: data.answer,
+      userID: auth.currentUser.uid,
+      nextReview: firebase.firestore.FieldValue.serverTimestamp(),
+    })
+  }
+
 }
-
-
-
-// const getUser = async () => {
-//   const userRef = db.collection('userObjects');
-//   try {
-//     const users = await userRef.where("uid", "==", auth.currentUser.uid).get();
-//     for (const doc of users.docs) {
-//       const data = doc.data();
-//       setUser(data)
-//     }
-//   } catch (err) {
-//     alert(err)
-//   }
-// }
-
 
 
 const ProgressScreen = ({ books, user, parentFunc }) => {
