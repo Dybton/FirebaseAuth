@@ -36,8 +36,6 @@ const BookDetailScreen = ({ route }) => {
         return bookInLibrary;
     }
 
-    console.log(checkIfBookIsInLibrary())
-
     const showAlert = () => {
         Alert.alert(
             'Book Added',

@@ -48,9 +48,9 @@ const setUserCard = async (data) => {
       answer: data.answer,
       userID: auth.currentUser.uid,
       nextReview: firebase.firestore.FieldValue.serverTimestamp(),
+      step: 0,
     })
   }
-
 }
 
 

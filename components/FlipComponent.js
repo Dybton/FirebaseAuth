@@ -3,12 +3,17 @@ import { View, Text, Button, StyleSheet, Animated, TouchableOpacity } from 'reac
 
 import FlipCard from './FlipCard';
 
-const FlipComponent = ({ enableMiddle, question, answer }) => {
+const FlipComponent = ({ setIsQuestion, isQuestion, enableMiddle, question, answer }) => {
 
 
   const animate = useRef(new Animated.Value(0));
   const [isFlipped, setIsFlipped] = useState(false);
   const handleFlip = () => {
+    if (isQuestion) {
+      setIsQuestion(false)
+    } else {
+      setIsQuestion(true)
+    }
     enableMiddle();
     Animated.timing(animate.current, {
       duration: 200,
@@ -30,20 +35,19 @@ const FlipComponent = ({ enableMiddle, question, answer }) => {
   });
 
   return (
-
     <View>
       <TouchableOpacity onPress={handleFlip}>
         <View style={styles.container}>
           <Animated.View style={[{ transform: [{ rotateY: interpolateFront }] }, styles.hidden]}>
             <FlipCard
               content={question}
-              isQuestion={true}
+              isQuestion={isQuestion}
             />
           </Animated.View>
           <Animated.View style={[{ transform: [{ rotateY: interpolateBack }] }, styles.hidden, styles.back]}>
             <FlipCard
               content={answer}
-              isQuestion={false}
+              isQuestion={isQuestion}
             />
           </Animated.View>
         </View>

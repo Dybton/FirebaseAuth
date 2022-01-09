@@ -4,29 +4,27 @@ import { Text, TouchableOpacity, Button, StyleSheet, View } from 'react-native';
 import SmallButton from "../components/buttons/SmallButton";
 import theme from '../assets/themes'
 
-const StepIndicatorFunction = ({ enableBottom, enabledStatus }) => {
-    const [leftButtonClicked, setLeftButtonClicked] = useState(false)
-    const [rightButtonClicked, setRightButtonClicked] = useState(false)
+const StepIndicatorFunction = (props) => {
     const [currentPosition, setCurrentPosition] = useState(0);
+
     const forgotAnswer = () => {
-        (currentPosition > 0 ? setCurrentPosition(0) : null);
-        setLeftButtonClicked(true)
-        setRightButtonClicked(false)
-        enableBottom()
+        // (currentPosition > 0 ? setCurrentPosition(0) : null);
+        props.setLeftButtonClicked(true)
+        props.setRightButtonClicked(false)
+        props.enableBottom()
     }
     const rememberAnswer = () => {
-        (currentPosition < 7 ? setCurrentPosition(currentPosition + 1) : null);
-        setLeftButtonClicked(false)
-        setRightButtonClicked(true)
-        enableBottom()
+        // (currentPosition < 7 ? setCurrentPosition(currentPosition + 1) : null);
+        props.setLeftButtonClicked(false)
+        props.setRightButtonClicked(true)
+        props.enableBottom()
     }
 
     return (
-        <View pointerEvents={enabledStatus ? 'auto' : 'none'} style={(enabledStatus) ? styles.enabledContainer : styles.disabledContainer}>
-
+        <View pointerEvents={props.enabledStatus ? 'auto' : 'none'} style={(props.enabledStatus) ? styles.enabledContainer : styles.disabledContainer}>
             <View style={styles.buttonsContainer}>
-                <SmallButton title={"No"} status={leftButtonClicked} onPress={() => forgotAnswer()} />
-                <SmallButton title={"Yes"} status={rightButtonClicked} onPress={() => rememberAnswer()} />
+                <SmallButton title={"No"} status={props.leftButtonClicked} onPress={() => forgotAnswer()} />
+                <SmallButton title={"Yes"} status={props.rightButtonClicked} onPress={() => rememberAnswer()} />
             </View>
             <View style={styles.textContainer}>
                 <Text style={styles.imageSubtitle}> You will see the card again in: </Text>
@@ -35,9 +33,9 @@ const StepIndicatorFunction = ({ enableBottom, enabledStatus }) => {
                 <StepIndicator
                     stepCount={4}
                     customStyles={thirdIndicatorStyles}
-                    currentPosition={currentPosition}
+                    currentPosition={props.step}
                     // we need to make these dynamic
-                    labels={['0 Days', '3 Days', '7 Days', '14 Days']}
+                    labels={['0 Days', '3 Days', '10 Days', '21 Days']}
                 />
             </View>
         </View>
