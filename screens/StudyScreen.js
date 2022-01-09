@@ -15,25 +15,30 @@ import 'firebase/firestore'
 
 const StudyScreen = () => {
   // states
+  const [cardIndex, setCardIndex] = useState(0);
   const [studyCards, setStudyCards] = useState([]);
   const [Loaded, setLoaded] = useState(false);
   const [middleSectionEnabled, setMiddleSectionEnabled] = useState(false);
   const [bottomSectionEnabled, setBottomSectionEnabled] = useState(false);
 
-
   useEffect(() => {
     getUserCards();
-  }, [Loaded])
+  }, [])
 
   // Filter the cards so only cards to be reviewed will be present
   const filterCards = (Card) => {
+    // Create a timestamp from TimeStamp. 
     const cardTime = Card.nextReview.toDate();
     const currentTime = firebase.firestore.Timestamp.fromDate(new Date()).toDate();
     if (currentTime > cardTime) {
       return Card;
     }
   }
-
+  if (studyCards.length === 0) {
+    console.log("studyCards is empty")
+  } else {
+    console.log(studyCards)
+  }
 
   // We need to use those to make a query to the cards to get questions and answers
   // The cards needs to be funneled into the studyScreen
@@ -48,20 +53,21 @@ const StudyScreen = () => {
       const studyCardArray = [];
       for (const doc of userCards.docs) {
         const data = doc.data();
-        studyCardArray.push(filterCards(data))
+        const filteredCard = filterCards(data);
+        if (filteredCard !== undefined) {
+          studyCardArray.push(filteredCard)
+        }
         setStudyCards(studyCardArray);
       }
     } catch (err) {
       alert(err)
     } finally {
       setLoaded(true)
-      if (Loaded) {
-        console.log(studyCards)
-      }
     }
   }
 
   // function that sets middle section
+  // There's some refactoring to be done here
   const enableMiddle = () => {
     setMiddleSectionEnabled(true)
   }
@@ -71,20 +77,28 @@ const StudyScreen = () => {
     console.log('bottom true')
   }
 
-  // pass the function to flipcomponent
-
+  const incrementIndex = () => {
+    setCardIndex(cardIndex + 1)
+    // setMiddleSectionEnabled(false)
+    // setBottomSectionEnabled(false)
+    // console.log("button")
+  }
 
   return (
     <View>
       <View style={styles.container}>
-        <FlipComponent parentFunc={enableMiddle} />
+        {
+          (studyCards.length !== 0) ?
+            <FlipComponent enableMiddle={enableMiddle} question={studyCards[cardIndex].question} answer={studyCards[cardIndex].answer} /> :
+            <FlipComponent enableMiddle={enableMiddle} question="" answer="" />
+        }
       </View>
       <View style={styles.textContainer}>
         <Text style={styles.imageSubtitle}> Did you remember?</Text>
       </View>
-      <StepIndicatorFunction enabledStatus={middleSectionEnabled} parentFunc={enableBottom} />
+      <StepIndicatorFunction enabledStatus={middleSectionEnabled} enableBottom={enableBottom} />
       <View style={[styles.container, styles.buttonContainer]}>
-        <LargeButton enabledStatus={bottomSectionEnabled} title={"Next Card (54 Cards Left)"} />
+        <LargeButton enabledStatus={bottomSectionEnabled} title={studyCards.length} onPress={() => incrementIndex()} />
       </View>
     </View >
   );

@@ -4,7 +4,7 @@ import { Text, TouchableOpacity, Button, StyleSheet, View } from 'react-native';
 import SmallButton from "../components/buttons/SmallButton";
 import theme from '../assets/themes'
 
-const StepIndicatorFunction = ({ parentFunc, enabledStatus }) => {
+const StepIndicatorFunction = ({ enableBottom, enabledStatus }) => {
     const [leftButtonClicked, setLeftButtonClicked] = useState(false)
     const [rightButtonClicked, setRightButtonClicked] = useState(false)
     const [currentPosition, setCurrentPosition] = useState(0);
@@ -12,13 +12,13 @@ const StepIndicatorFunction = ({ parentFunc, enabledStatus }) => {
         (currentPosition > 0 ? setCurrentPosition(0) : null);
         setLeftButtonClicked(true)
         setRightButtonClicked(false)
-        parentFunc()
+        enableBottom()
     }
     const rememberAnswer = () => {
         (currentPosition < 7 ? setCurrentPosition(currentPosition + 1) : null);
         setLeftButtonClicked(false)
         setRightButtonClicked(true)
-        parentFunc()
+        enableBottom()
     }
 
     return (

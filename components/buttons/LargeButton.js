@@ -4,7 +4,7 @@ import React from "react";
 
 const LargeButton = ({ onPress, title, enabledStatus }) => (
     <View pointerEvents={enabledStatus ? 'auto' : 'none'} style={(enabledStatus) ? styles.largeButtonContainer : styles.largeButtonContainerDisabled}>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={onPress}>
             <Text style={styles.buttonText}>{title}</Text>
         </TouchableOpacity>
     </View>

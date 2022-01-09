@@ -3,11 +3,13 @@ import { View, Text, Button, StyleSheet, Animated, TouchableOpacity } from 'reac
 
 import FlipCard from './FlipCard';
 
-const FlipComponent = ({ parentFunc }) => {
+const FlipComponent = ({ enableMiddle, question, answer }) => {
+
+
   const animate = useRef(new Animated.Value(0));
   const [isFlipped, setIsFlipped] = useState(false);
   const handleFlip = () => {
-    parentFunc();
+    enableMiddle();
     Animated.timing(animate.current, {
       duration: 200,
       toValue: isFlipped ? 0 : 180,
@@ -34,13 +36,13 @@ const FlipComponent = ({ parentFunc }) => {
         <View style={styles.container}>
           <Animated.View style={[{ transform: [{ rotateY: interpolateFront }] }, styles.hidden]}>
             <FlipCard
-              content="Hvad spiser hunden af?"
+              content={question}
               isQuestion={true}
             />
           </Animated.View>
           <Animated.View style={[{ transform: [{ rotateY: interpolateBack }] }, styles.hidden, styles.back]}>
             <FlipCard
-              content="Answer: Skål"
+              content={answer}
               isQuestion={false}
             />
           </Animated.View>
