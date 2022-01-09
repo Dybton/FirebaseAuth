@@ -18,11 +18,13 @@ const StudyScreen = () => {
   const [cardIndex, setCardIndex] = useState(0);
   const [studyCards, setStudyCards] = useState([]);
   const [Loaded, setLoaded] = useState(false);
+  const [fun, setFun] = useState([]);
   const [middleSectionEnabled, setMiddleSectionEnabled] = useState(false);
   const [bottomSectionEnabled, setBottomSectionEnabled] = useState(false);
 
   useEffect(() => {
     getUserCards();
+    getUserCards2();
   }, [])
 
   // Filter the cards so only cards to be reviewed will be present
@@ -37,13 +39,27 @@ const StudyScreen = () => {
   if (studyCards.length === 0) {
     console.log("studyCards is empty")
   } else {
-    console.log(studyCards)
+    // console.log(studyCards)
   }
+
 
   // We need to use those to make a query to the cards to get questions and answers
   // The cards needs to be funneled into the studyScreen
   // Based on whether the user remembers them 
 
+  const getUserCards2 = async () => {
+    const userCardRef = db.collection('userCards');
+    const currentTime = firebase.firestore.Timestamp.fromDate(new Date())
+    try {
+      userCardRef.where("nextReview", "<=", currentTime).where("userID", "==", auth.currentUser.uid).onSnapshot(snapshot => {
+        setFun(snapshot.docs.map(doc => doc.data()))
+      })
+    } catch (err) {
+      alert(err)
+    } finally {
+      setLoaded(true)
+    }
+  }
 
   //collects the userCards
   const getUserCards = async () => {
