@@ -10,7 +10,6 @@ import * as firebase from 'firebase'; // Is there a way to import this without h
 const BookDetailScreen = ({ route }) => {
     const { book, user, parentFunc } = route.params;
     const navigation = useNavigation();
-
     const addBook = () => {
         if (checkIfBookIsInLibrary()) {
             showAlertError();

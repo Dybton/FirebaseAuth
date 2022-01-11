@@ -5,19 +5,23 @@ import SmallButton from "../components/buttons/SmallButton";
 import theme from '../assets/themes'
 
 const StepIndicatorFunction = (props) => {
-    const [currentPosition, setCurrentPosition] = useState(0);
+    const [currentPosition, setCurrentPosition] = useState(props.step);
 
     const forgotAnswer = () => {
         // (currentPosition > 0 ? setCurrentPosition(0) : null);
         props.setLeftButtonClicked(true)
         props.setRightButtonClicked(false)
         props.enableBottom()
+        setCurrentPosition(0)
     }
     const rememberAnswer = () => {
         // (currentPosition < 7 ? setCurrentPosition(currentPosition + 1) : null);
         props.setLeftButtonClicked(false)
         props.setRightButtonClicked(true)
         props.enableBottom()
+        if (!props.rightButtonClicked) {
+            setCurrentPosition(currentPosition + 1)
+        }
     }
 
     return (
@@ -33,7 +37,7 @@ const StepIndicatorFunction = (props) => {
                 <StepIndicator
                     stepCount={4}
                     customStyles={thirdIndicatorStyles}
-                    currentPosition={props.step}
+                    currentPosition={currentPosition}
                     // we need to make these dynamic
                     labels={['0 Days', '3 Days', '10 Days', '21 Days']}
                 />

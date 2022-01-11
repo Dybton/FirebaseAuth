@@ -54,6 +54,8 @@ const StudyScreen = () => {
     }
   }
 
+
+
   // //collects the userCards
   // const getUserCards = async () => {
   //   const userCardRef = db.collection('userCards');
@@ -83,8 +85,16 @@ const StudyScreen = () => {
         scrollEnabled={false}
       >
         {
-          studyCards.map(({ answer, question, nextReview, step }) => (
-            <StudyCard answer={answer} question={question} cardsToStudy={studyCards.length} step={step} nextReview={nextReview} />
+          studyCards.map(({ answer, question, nextReview, step, userID, cardID }) => (
+            <StudyCard
+              answer={answer}
+              question={question}
+              cardsToStudy={studyCards.length}
+              step={step}
+              nextReview={nextReview}
+              userID={userID}
+              cardID={cardID}
+            />
           ))}
       </ScrollView>
 
