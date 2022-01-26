@@ -1,4 +1,4 @@
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { StyleSheet, Text, TouchableOpacity, View, Image } from 'react-native'
 import Card from '../components/Card'
 import Books from '../components/Books'
 import React, { useState, useEffect } from 'react';
@@ -6,9 +6,8 @@ import Separator from '../components/Separator'
 import { auth, db } from '../firebase';
 import bookPage from '../assets/data/bookPage';
 
-
-
-const HomeScreen = ({ books, user, parentFunc }) => {
+const HomeScreen = ({ books, parentFunc, user}) => {
+  const [userObject, setUserObject] = useState(user)
 
   return (
     <View>
@@ -19,11 +18,10 @@ const HomeScreen = ({ books, user, parentFunc }) => {
       <View>
         <Books books={books} user={user} parentFunc={parentFunc} />
       </View>
+      <Image style={styles.image} source={require('../assets/images/PileOfBooks.png')}/>
     </View>
   )
 }
-
-// I need to do something about the ordering!
 
 export default HomeScreen
 

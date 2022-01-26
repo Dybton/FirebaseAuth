@@ -4,6 +4,8 @@ import FinishedBooksComponent from '../components/FinishedBooksComponent';
 import Books from './Books';
 import React, { useState, useEffect } from 'react';
 import { auth, db } from '../firebase'
+import theme from '../assets/themes'
+
 
 const UserBooksComponent = ({books, sender}) => {
 
@@ -20,7 +22,7 @@ const UserBooksComponent = ({books, sender}) => {
     return (
         <> 
             <ScrollView>
-                <Text> Loading </Text>
+                <Text style={styles.imageTitle}> Loading</Text>
             </ScrollView>
         </>
         );
@@ -31,4 +33,11 @@ const UserBooksComponent = ({books, sender}) => {
 
 export default UserBooksComponent
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+    imageTitle: {
+        ...theme.textVariants.h1,
+        color: theme.colors.white,
+      }
+})
+
+

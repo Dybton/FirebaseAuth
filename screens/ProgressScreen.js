@@ -6,15 +6,16 @@ import * as firebase from 'firebase'; // Is there a way to import this without h
 import { useNavigation } from '@react-navigation/native';
 import theme from '../assets/themes'
 
+const ProgressScreen = ({ books, user, parentFunc }) => {
+  const navigation = useNavigation();
+  const [bookIndex, setBookIndex] = useState(0)
+  const [lastBook, setLastBook] = useState(false)
+  const [booksInProgress, setBooksInProgress] = useState([])
+  const [isLoaded, setIsLoaded] = useState(false)
 
+  const pickerRef = useRef();
 
-// We need to get all the cards, where page < selected item (page nr)
-// I won't get it real time
-
-// I need to do it for all the books
-
-
-// Get the user object - should be a get method
+  // Get the card object
 const getCards = async (book, page) => {
   const cardRef = db.collection('cards').where("book", "==", book);
   try {
@@ -31,7 +32,7 @@ const getCards = async (book, page) => {
   }
 }
 
-// Creates a userCard in firestore
+  // Creates a userCard in firestore
 const setUserCard = async (data) => {
   const userCardId = auth.currentUser.uid + "_" + data.cardID;
   const userCardRef = db.collection("userCards").doc(userCardId);
@@ -41,6 +42,7 @@ const setUserCard = async (data) => {
     console.log("Document exists")
   } catch (error) {
     console.log("Document does not exists")
+    console.log(data.book)
     userCardRef.set({
       book: data.book,
       cardID: data.cardID,
@@ -53,20 +55,27 @@ const setUserCard = async (data) => {
   }
 }
 
-
-const ProgressScreen = ({ books, user, parentFunc }) => {
-  const navigation = useNavigation();
-  const [bookIndex, setBookIndex] = useState(0)
-  const [lastBook, setLastBook] = useState(false)
-
-  const pickerRef = useRef();
-
   /**
    * Pickerref is a function in the WheelPicker component (child). It only runs when bookIndex changes.
    */
   useEffect(() => {
-    pickerRef.current()
-  }, [bookIndex, lastBook])
+    if (user.reading.length !== 0 && isLoaded) {
+      pickerRef.current()
+    }
+    SetReadingBooks()
+  }, [bookIndex, lastBook, isLoaded])
+
+  // Find all the readingbooks
+  const SetReadingBooks = () => {
+    let booksReading = [];
+    for (let i = 0; i <= user.reading.length - 1; i++) {
+      let book = books.filter(d =>
+        d.title == user.reading[i].title)
+      booksReading.push(book[0])
+    }
+    setBooksInProgress(booksReading)
+    setIsLoaded(true)
+}
 
   /** Function that updates the bookIndex */
   const nextBook = (() => {
@@ -81,32 +90,21 @@ const ProgressScreen = ({ books, user, parentFunc }) => {
   // This is only called when bookIndex is updated
   const callback = useCallback((selectedItem) => {
     if (bookIndex !== 0 && !lastBook) {
-      getCards(books[(bookIndex - 1)].title, selectedItem)
-      // console.log("the you have reached page " + selectedItem + " in the book " + books[(bookIndex - 1)].title)
+      getCards(booksInProgress[(bookIndex - 1)].title, selectedItem)
       updatePage(selectedItem, (bookIndex - 1))
     } if (lastBook) {
-      getCards(books[(bookIndex)].title, selectedItem)
-      // console.log("the you have reached page " + selectedItem + " in the book " + books[(bookIndex)].title)
+      console.log("callback triggered")
+      getCards(booksInProgress[(bookIndex)].title, selectedItem)
       updatePage(selectedItem, bookIndex)
       navigation.navigate("StudyQuestions");
     }
   });
-
-
-  // So now I need to use the data above to update the userObject.
-  // Create a helper function, and pass in the data
-  // Take an input from the useCallBack func, the bookIndex and the selected item
-  // we have the index, so we need to say => update page: with selected item, for the book which has index x
-
-  // I need to get all the 
 
   const updatePage = (pageProgress, index) => {
     parentFunc();
     const reading = user.reading
     const objectToChange = reading[index];
     objectToChange.page = pageProgress;
-    // console.log(objectToChange)
-    // console.log(reading);
 
     db.collection("userObjects").doc(user.uid).update({
       reading: reading
@@ -115,22 +113,39 @@ const ProgressScreen = ({ books, user, parentFunc }) => {
     });
   }
 
-
-  return (
-    <View style={styles.container}>
-      <Text style={styles.imageTitle}> {books[bookIndex].title} </Text>
-      <Text style={styles.imageSubtitle}> {books[bookIndex].author} </Text>
-      <Text style={styles.imageSubtitle}> How far have you read? </Text>
-      <WheelPicker pickerRef={pickerRef}
-        pages={books[bookIndex].pageNumber}
-        currentProgress={user.reading[bookIndex].page}
-        parentCallback={callback}
-      />
-      <Button title="Next" onPress={() => nextBook()} />
+  if ((user.reading.length === 0)) {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.imageTitle}> Kindly select a book</Text>
+      </View >
+    );
+  } if(isLoaded) {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.imageTitle}> {booksInProgress[bookIndex].title} </Text>
+        <Text style={styles.imageSubtitle}> {booksInProgress[bookIndex].author} </Text>
+        <Text style={styles.imageSubtitle}> How far have you read? </Text>
+        <WheelPicker pickerRef={pickerRef}
+          pages={booksInProgress[bookIndex].pageNumber}
+          currentProgress={user.reading[bookIndex].page}
+          parentCallback={callback}
+        />
+        <TouchableOpacity style={styles.button} onPress={() => nextBook()}>
+          <Text style={styles.buttonText}>
+            Next
+          </Text>
+        </TouchableOpacity>
+        <View>
+        </View>
+      </View >
+    )
+  } else {
+    return (
       <View>
+        <Text> Loading </Text>
       </View>
-    </View>
-  );
+    )
+  }
 };
 
 export default ProgressScreen
@@ -148,8 +163,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   button: {
-    backgroundColor: '#0782F9',
-    width: '60%',
+    backgroundColor: theme.colors.primary,
+    width: '50%',
     padding: 15,
     borderRadius: 10,
     alignItems: 'center',

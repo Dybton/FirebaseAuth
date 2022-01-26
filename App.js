@@ -19,11 +19,6 @@ import { DefaultTheme } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
 
-
-
-
-
-
 //Import Screens
 import LoginScreen from './screens/LoginScreen';
 import HomeScreen from './screens/HomeScreen';
@@ -33,6 +28,7 @@ import ProfileScreen from './screens/ProfileScreen';
 import StudyScreen from './screens/StudyScreen'
 import ProgressScreen from './screens/ProgressScreen';
 import BookDetailScreen from './screens/BookDetailScreen';
+import QuestionsFinished from './screens/QuestionsFinished';
 
 // Create Navigators
 const OnboardingStack = createNativeStackNavigator();
@@ -127,24 +123,32 @@ export default function App() {
 function TabsScreen() {
   const [books, setBooks] = useState([]);
   const [user, setUser] = useState([]);
+  const[isLoaded, setIsLoaded] = useState(false)
+
 
   // call the db methods I need
   useEffect(() => {
     function fetchData() {
-      getUser(); // would it be possible to just pass getUser? 
+      getUser();
       getBooks();
+      setIsLoaded(true)
     }
     fetchData();
+    if(isLoaded) {
+      SetReadingBooks();
+    }
   }, [])
+
 
   // Defining the different get Methods 
 
   // Get the Books
-  const getBooks = () => {
+  const getBooks = async () => {
     db.collection('books').onSnapshot(snapshot => (
       setBooks(
         snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })))
     ))
+    
   }
 
   // Get the user object - should be a get method
@@ -160,6 +164,7 @@ function TabsScreen() {
       alert(err)
     }
   }
+
 
   return (
     <Tabs.Navigator
@@ -230,7 +235,7 @@ function HomeStackScreen({ books, user, parentFunc }) {
 }
 
 // This navigator handles the study part
-function StudyStackScreen({ books, user, parentFunc }) {
+function StudyStackScreen({books, user, parentFunc }) {
   return (
     <StudyStack.Navigator>
       <StudyStack.Screen
@@ -239,6 +244,7 @@ function StudyStackScreen({ books, user, parentFunc }) {
         options={{ headerShown: false }}
       />
       <StudyStack.Screen name="StudyQuestions" component={StudyScreen} options={{ headerShown: false }} />
+      <StudyStack.Screen name="QuestionsFinished" component={QuestionsFinished} options={{ headerShown: false }} />
     </StudyStack.Navigator>
   );
 }

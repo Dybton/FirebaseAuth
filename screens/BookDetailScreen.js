@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, Text, Touchable, View, TouchableOpacity, Alert } from 'react-native'
+import { StyleSheet, Text, Touchable, View, TouchableOpacity, Alert, Image } from 'react-native'
 import BookDetailComponent from '../components/BookDetailComponent';
 import theme from '../assets/themes';
 import { useNavigation } from '@react-navigation/native';
@@ -55,18 +55,21 @@ const BookDetailScreen = ({ route }) => {
         );
     }
 
-
     return (
         <View style={styles.container}>
-            <Text> Title: {book.title} </Text>
-            <Text> Author: {book.author} </Text>
-            <Text> Id: {book.id} </Text>
-            <TouchableOpacity
-                onPress={() => { addBook() }}
-                style={styles.button}
-            >
-                <Text style={styles.buttonText}>Add Book</Text>
-            </TouchableOpacity>
+            <View style={styles.textContainer}>
+                <Text style={styles.imageTitle}> {book.title} </Text>
+                <Text style={styles.imageTitle}>Written by {book.author}</Text>
+                <TouchableOpacity
+                    onPress={() => { addBook() }}
+                    style={styles.button}
+                >
+                    <Text style={styles.imageSubtitle}>Add Book</Text>
+                </TouchableOpacity>
+                <Image style={styles.image} source={require('../assets/images/FlyingBooksBackGround.png')}/>
+                
+                
+            </View>
 
         </View>
     )
@@ -76,22 +79,35 @@ export default BookDetailScreen
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
+        flexDirection: "row",
+        justifyContent: 'space-around',
+    },
+    buttonContainer: {
+        marginTop: theme.spacing.l,
+    }, textContainer: {
+        paddingTop: '70%',
+        paddingLeft: '10%%',
+        paddingRight: '10%%',
         justifyContent: 'center',
-        alignItems: 'center'
-    },
-    button: {
-        backgroundColor: '#0782F9',
-        width: '60%',
-        padding: 15,
-        borderRadius: 10,
         alignItems: 'center',
-        marginTop: 40,
+        alignContent: 'center',
+        marginTop: theme.spacing.l,
+        marginBottom: theme.spacing.m,
+    }, imageTitle: {
+        ...theme.textVariants.h1,
+        color: theme.colors.white,
+        
     },
-    buttonText: {
-        color: 'white',
-        fontWeight: '700',
-        fontSize: 16,
+    imageSubtitle: {
+        ...theme.textVariants.body2,
+        color: theme.colors.white
+    }, button: {
+        ...theme.button,
+        backgroundColor: theme.colors.primary,
+        width: 200,
+    }, image: {
+        marginTop: '20%',
+        width: 400,
+        height: 216.27,
     }
-}
-)
+});

@@ -1,10 +1,7 @@
-// Import the functions you need from the SDKs you need
+
 import { initializeApp } from "firebase/app";
 import * as firebase from 'firebase';
 import 'firebase/firestore'
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
 
 
 // Your web app's Firebase configuration
@@ -20,9 +17,9 @@ const firebaseConfig = {
 // Initialize and connects firebase
 let app;
 if (firebase.apps.length === 0) {
-    app = firebase.initializeApp(firebaseConfig);
+  app = firebase.initializeApp(firebaseConfig);
 } else {
-    app = firebase.app();
+  app = firebase.app();
 }
 
 
@@ -30,17 +27,35 @@ if (firebase.apps.length === 0) {
 const db = firebase.firestore();
 
 // Gives us access to authentification
-const auth = firebase.auth(); 
+const auth = firebase.auth();
 
 // Firebase Login and Register Methods
-const SignUpMethod = (email, password) => {
+const SignUpMethod = async (email, password) => {
   auth
     .createUserWithEmailAndPassword(email, password)
     .then(userCredentials => {
-      const user = userCredentials.user;
-      console.log('Registered with:', user.email);
+      let user = userCredentials.user;
+      console.log('Registered with:', user.uid)
+      createUserObject(email, userCredentials.user)
     })
     .catch(error => alert(error.message))
+    // Once this is done, run createUserObject
+}
+
+
+const createUserObject = (email, user) => {
+  const userObjectRef = db.collection("userObjects").doc(user.uid);
+  const emailArray = email.split("@");
+  try {
+    userObjectRef.set({
+      email: email,
+      name: emailArray[0],
+      reading: [],
+      read: [],
+      uid: user.uid
+    })
+  } catch (error) {
+  }
 }
 
 const LoginMethod = (email, password) => {
@@ -52,8 +67,5 @@ const LoginMethod = (email, password) => {
     })
     .catch(error => alert(error.message))
 }
-
-
-
 
 export { auth, db, SignUpMethod, LoginMethod };

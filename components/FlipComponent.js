@@ -1,10 +1,9 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { View, Text, Button, StyleSheet, Animated, TouchableOpacity } from 'react-native';
 
 import FlipCard from './FlipCard';
 
 const FlipComponent = ({ setIsQuestion, isQuestion, enableMiddle, question, answer }) => {
-
 
   const animate = useRef(new Animated.Value(0));
   const [isFlipped, setIsFlipped] = useState(false);
@@ -34,28 +33,28 @@ const FlipComponent = ({ setIsQuestion, isQuestion, enableMiddle, question, answ
     outputRange: ['180deg', '360deg'],
   });
 
+  // What I'm basically want is to show the top component 
+
   return (
     <View>
       <TouchableOpacity onPress={handleFlip}>
         <View style={styles.container}>
           <Animated.View style={[{ transform: [{ rotateY: interpolateFront }] }, styles.hidden]}>
             <FlipCard
-              content={question}
+              question={question}
+              answer={answer}
               isQuestion={isQuestion}
             />
           </Animated.View>
           <Animated.View style={[{ transform: [{ rotateY: interpolateBack }] }, styles.hidden, styles.back]}>
             <FlipCard
-              content={answer}
+              question={question}
+              answer={answer}
               isQuestion={isQuestion}
             />
           </Animated.View>
         </View>
       </TouchableOpacity>
-
-      {/* <TouchableOpacity onPress={handleFlip}> 
-                <Text> Flip </Text>
-            </TouchableOpacity> */}
     </View>
 
 

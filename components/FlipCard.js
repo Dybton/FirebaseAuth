@@ -2,22 +2,22 @@ import React from 'react';
 import { View, Text, Button, StyleSheet, TouchableOpacity, Image, TouchableOpacityBase } from 'react-native';
 import theme from '../assets/themes'
 
-type Props = {
-    cardQuestion: string;
-}
+// type Props = {
+//     cardQuestion: string;
+// }
 
-const FlipCard = ({ content, isQuestion }) => {
+const FlipCard = ({ question, answer, isQuestion }) => {
     if (isQuestion) {
         return (
             <View style={styles.card}>
-                <Text style={styles.cardText}> {content} </Text>
+                <Text style={styles.cardText}> {question} </Text>
                 <Text style={styles.clickToSeeAnswerText}> Try to recall. Then click to see answer </Text>
             </View>
         );
-    } else {
+    } if (!isQuestion) {
         return (
             <View style={styles.card}>
-                <Text style={styles.cardText}> {content} </Text>
+                <Text style={styles.cardText}> {answer} </Text>
             </View>
         );
     }

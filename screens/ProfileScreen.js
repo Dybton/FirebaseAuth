@@ -17,7 +17,6 @@ const ProfileScreen = ({ books }) => {
   const [booksInProgress, setBooksInProgress] = useState([]);
   const [sender, setSender] = useState('profile');
   const [userStatus, setUserStatus] = useState([{ reading: 'Loading' }]); // Dummy object
-  const [status, setStatus] = useState('false')
 
   // Calling the getMethods when the page loads, or when the page is rerendered. 
   useEffect(() => {
@@ -26,7 +25,7 @@ const ProfileScreen = ({ books }) => {
       getUserStatus();
     }
     fetchData();
-  }, [Loaded, status])
+  }, [Loaded])
 
   const getUserStatus = () => {
     db.collection('userObjects').where("uid", "==", auth.currentUser.uid).onSnapshot(snapshot => (
@@ -35,11 +34,11 @@ const ProfileScreen = ({ books }) => {
     ))
   }
 
-  useFocusEffect(
-    React.useCallback(() => {
-      setStatus(userStatus[0].reading)
-    })
-  );
+  // useFocusEffect(
+  //   React.useCallback(() => {
+  //     setStatus(userStatus[0].reading)
+  //   })
+  // );
 
   const getUser = async () => {
     const userRef = db.collection('userObjects');
@@ -103,18 +102,27 @@ const ProfileScreen = ({ books }) => {
   } else {
     return (
       <View style={styles.container}>
-        <View style={styles.headerContainer}>
-          <Text style={styles.headerText}> Books in progress </Text>
+
+        <View style={styles.booksContainer}>
+          {/* Books in progress */}
+          <View style={styles.headerContainer}>
+          <Text style={styles.headerText}> Books in Progress </Text>
+          </View>
+          <Separator />
+          <UserBooksComponent books={booksInProgress} sender={sender} />
+
         </View>
-        <Separator />
-        <UserBooksComponent books={booksInProgress} sender={sender} />
-        <View style={styles.headerContainer}>
-          <Text style={styles.headerText}> Finished books </Text>
+        <View style={styles.booksContainer}>
+          {/* Books in progress */}
+          <View style={styles.headerContainer}>
+          <Text style={styles.headerText}> Finished Books </Text>  
+          </View>
+          <Separator />
+          <UserBooksComponent books={finishedBooks} sender={sender} />
+
         </View>
-        <Separator />
-        <UserBooksComponent books={finishedBooks} sender={sender} />
         <View style={styles.buttonContainer}>
-          <TouchableOpacity
+        <TouchableOpacity
             onPress={handleSignOut}
             style={styles.button}
           >
@@ -130,31 +138,31 @@ export default ProfileScreen
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    justifyContent: 'center',
+    marginTop: 50,
+  },
+  booksContainer: {
+    height: '43.5%',
   },
   button: {
-    backgroundColor: '#0782F9',
+    backgroundColor: theme.colors.primary,
     width: '60%',
     padding: 15,
     borderRadius: 10,
     alignItems: 'center',
-    marginTop: 40,
   },
   buttonText: {
     color: 'white',
     fontWeight: '700',
     fontSize: 16,
   }, headerContainer: {
-    paddingTop: 50,
     alignItems: 'center',
   },
   headerText: {
     color: theme.colors.white,
     fontWeight: '400',
     fontSize: 30,
+    alignItems: 'center'
   }, buttonContainer: {
-    paddingTop: 50,
     alignItems: 'center',
   }
 })

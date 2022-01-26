@@ -1,7 +1,7 @@
 import React from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 
-const BookDetailComponent = ({book}) => {
+const BookDetailComponent = ({ book }) => {
     return (
         <View>
             <Text>

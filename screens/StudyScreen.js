@@ -8,20 +8,21 @@ import LargeButton from "../components/buttons/LargeButton";
 import SmallButton from "../components/buttons/SmallButton";
 import StepIndicatorFunction from '../components/StepIndicator';
 import StudyCard from '../components/StudyCard';
+import QuestionsFinished from './QuestionsFinished';
 
 // Firebase
 import firebase from 'firebase/app'
 import 'firebase/firestore'
 
-
 const StudyScreen = () => {
   // states
   const [studyCards, setStudyCards] = useState([]);
-
+  const [isLoaded, setIsLoaded] = useState(false)
 
   useEffect(() => {
     getUserCards();
-  }, [])
+  }, [isLoaded])
+
 
   // // Filter the cards so only cards to be reviewed will be present
   // const filterCards = (Card) => {
@@ -43,18 +44,19 @@ const StudyScreen = () => {
   // Based on whether the user remembers them 
 
   const getUserCards = async () => {
-    const userCardRef = db.collection('userCards');
+    console.log("This is getUserCards")
+    const userCardRef = await db.collection('userCards');
     const currentTime = firebase.firestore.Timestamp.fromDate(new Date())
     try {
       userCardRef.where("nextReview", "<=", currentTime).where("userID", "==", auth.currentUser.uid).onSnapshot(snapshot => {
         setStudyCards(snapshot.docs.map(doc => doc.data()))
+        console.log(snapshot.docs.map(doc => doc.data()))
       })
+      setIsLoaded(true)
     } catch (err) {
       alert(err)
     }
   }
-
-
 
   // //collects the userCards
   // const getUserCards = async () => {
@@ -94,6 +96,7 @@ const StudyScreen = () => {
               nextReview={nextReview}
               userID={userID}
               cardID={cardID}
+              getUserCards={getUserCards}
             />
           ))}
       </ScrollView>

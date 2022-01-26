@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
-import { auth } from '../firebase'
+import { auth } from '../firebase';
+import theme from '../assets/themes'
+
 
 const LoadingScreen = ({navigation}) => {
 
@@ -17,7 +19,7 @@ const LoadingScreen = ({navigation}) => {
       
     return (
         <View style={styles.container}>
-            <Text>Loading</Text>
+            <Text >Loading</Text>
         </View>
     )
 }
@@ -25,10 +27,13 @@ const LoadingScreen = ({navigation}) => {
 export default LoadingScreen
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center'
-    }
-})
+  imageTitle: {
+      color: 'white',
+      ...theme.textVariants.h1,
+  }
+});
+
+
+
+
 

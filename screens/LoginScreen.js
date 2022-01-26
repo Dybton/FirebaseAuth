@@ -1,9 +1,9 @@
 import { useNavigation } from '@react-navigation/core'
 import React, { useEffect, useState } from 'react'
 import { KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
-import { auth, SignUpMethod, LoginMethod } from '../firebase'
+import { auth, SignUpMethod, LoginMethod} from '../firebase'
 
-const LoginScreen = ({navigation}) => {
+const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
@@ -34,13 +34,13 @@ const LoginScreen = ({navigation}) => {
         <TextInput
           placeholder="Email"
           value={email}
-          onChangeText={text => setEmail(text)}
+          onChangeText={text => setEmail(text.toLowerCase())}
           style={styles.input}
         />
         <TextInput
           placeholder="Password"
           value={password}
-          onChangeText={text => setPassword(text)}
+          onChangeText={text => setPassword(text.toLowerCase())}
           style={styles.input}
           secureTextEntry
         />
