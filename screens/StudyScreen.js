@@ -18,9 +18,10 @@ const StudyScreen = () => {
   // states
   const [studyCards, setStudyCards] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false)
-
   useEffect(() => {
     getUserCards();
+    console.log("studycreen")
+    
   }, [isLoaded])
 
 
@@ -44,19 +45,45 @@ const StudyScreen = () => {
   // Based on whether the user remembers them 
 
   const getUserCards = async () => {
-    console.log("This is getUserCards")
     const userCardRef = await db.collection('userCards');
-    const currentTime = firebase.firestore.Timestamp.fromDate(new Date())
+      const currentTime = firebase.firestore.Timestamp.fromDate(new Date())
+      // we'll filter it locally, instead of using the firestore
+      // we make an if statement that checks whether it's <= the current time. If so we set the state
     try {
-      userCardRef.where("nextReview", "<=", currentTime).where("userID", "==", auth.currentUser.uid).onSnapshot(snapshot => {
-        setStudyCards(snapshot.docs.map(doc => doc.data()))
-        console.log(snapshot.docs.map(doc => doc.data()))
+      userCardRef.where("userID", "==", auth.currentUser.uid).onSnapshot(snapshot => {
+        setStudyCards(snapshot.docs.map(doc => doc.data()));
+        const arr = snapshot.docs.map(doc => doc.data());
+        arr.forEach(card => {
+          if(card.nextReview <= currentTime) {
+            setStudyCards([...studyCards], card)
+          }
+        });
       })
       setIsLoaded(true)
     } catch (err) {
       alert(err)
     }
+    console.log("getusercardsfunction")
   }
+
+  // Timestamp nu - get all cards from now or earlier. - Problem is, this runs after the 
+  // Se timestamp now.
+
+  // const getUserCards = async () => {
+  //   console.log("getusercardsfunction")
+  //   const userCardRef = await db.collection('userCards');
+  //   const currentTime = firebase.firestore.Timestamp.fromDate(new Date())
+  //   try {
+  //     userCardRef.where("nextReview", "<=", currentTime).where("userID", "==", auth.currentUser.uid).onSnapshot(snapshot => {
+  //       setStudyCards(snapshot.docs.map(doc => doc.data()))
+  //       // console.log(snapshot.docs.map(doc => doc.data()))
+  //     })
+  //     setIsLoaded(true)
+  //   } catch (err) {
+  //     alert(err)
+  //   }
+    
+  // }
 
   // //collects the userCards
   // const getUserCards = async () => {

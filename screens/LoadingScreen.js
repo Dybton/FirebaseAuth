@@ -4,9 +4,15 @@ import { auth } from '../firebase';
 import theme from '../assets/themes'
 
 
-const LoadingScreen = ({navigation}) => {
+const LoadingScreen = ({navigation, route}) => {
+    const isFromProgressScreen = route.params;
 
+    // If coming from ProgressScreen, navigate to StudyScreen (after 1 second)
+    // else do the other stuff
     useEffect(() => {
+      if(isFromProgressScreen !== undefined) {
+        navigation.navigate("StudyQuestions");
+      } else {
         const unsubscribe = auth.onAuthStateChanged(user => {
           if (user) {
             navigation.replace("HomeTab")
@@ -15,7 +21,7 @@ const LoadingScreen = ({navigation}) => {
           }
         })
         return unsubscribe
-      }, [])
+      }}, [])
       
     return (
         <View style={styles.container}>

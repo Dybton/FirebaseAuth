@@ -24,7 +24,6 @@ const getCards = async (book, page) => {
       const data = doc.data();
       if (page >= data.page) {
         setUserCard(data)
-
       }
     }
   } catch (err) {
@@ -53,6 +52,7 @@ const setUserCard = async (data) => {
       step: 0,
     })
   }
+  console.log("Setusercards function")
 }
 
   /**
@@ -63,6 +63,7 @@ const setUserCard = async (data) => {
       pickerRef.current()
     }
     SetReadingBooks()
+    console.log(lastBook)
   }, [bookIndex, lastBook, isLoaded])
 
   // Find all the readingbooks
@@ -96,9 +97,13 @@ const setUserCard = async (data) => {
       console.log("callback triggered")
       getCards(booksInProgress[(bookIndex)].title, selectedItem)
       updatePage(selectedItem, bookIndex)
+      // navigation.navigate("Loading", {isFromProgressScreen: true});
       navigation.navigate("StudyQuestions");
     }
   });
+
+
+  // when is it last book?
 
   const updatePage = (pageProgress, index) => {
     parentFunc();
