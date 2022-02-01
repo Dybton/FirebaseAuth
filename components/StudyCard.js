@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet, Button, Pressable } from 'react-native';
 import theme from '../assets/themes';
-import React, { useState } from 'react';
+import React, { useState, useEffect} from 'react';
 
 // Firebase
 import { db, Timestamp } from '../firebase';
@@ -24,6 +24,11 @@ const StudyCard = ({ question, answer, cardsToStudy, step, userID, cardID, getUs
     const [leftButtonClicked, setLeftButtonClicked] = useState(false)
     const [rightButtonClicked, setRightButtonClicked] = useState(false)
     const [currentPosition, setCurrentPosition] = useState(step);
+
+    useEffect(() => {
+    getUserCards();
+  }, [])
+
 
     const nextCard = () => {
         setMiddleSectionEnabled(false)

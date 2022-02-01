@@ -50,12 +50,13 @@ const MyTheme = {
 
 export default function App() {
   // Async Storage States 
-  const [isFirstLaunch, setIsFirstLaunch] = useState('')
+  const [isFirstLaunch, setIsFirstLaunch] = useState(true)
   const [statusKeyLoaded, setStatusKeyLoaded] = useState(false)
 
 
   // Every time page loads it checks if it's first launch or not.
   useEffect(() => {
+    remove()
     checkIfFirstLaunch();
   }, []);
 

@@ -8,6 +8,7 @@ import * as firebase from 'firebase'; // Is there a way to import this without h
 
 
 const BookDetailScreen = ({ route }) => {
+
     const { book, user, parentFunc } = route.params;
     const navigation = useNavigation();
     const addBook = () => {
@@ -35,6 +36,14 @@ const BookDetailScreen = ({ route }) => {
         return bookInLibrary;
     }
 
+    const checkIfMoreThanOneBook = () => {
+        let moreThanOneBook = false;
+        if (user.reading.length > 0) {
+            moreThanOneBook = true;
+        } 
+        return moreThanOneBook;
+    }
+
     const showAlert = () => {
         Alert.alert(
             'Book Added',
@@ -54,6 +63,17 @@ const BookDetailScreen = ({ route }) => {
             ]
         );
     }
+
+    // const showAlertErrorOnlyOneBook = () => {
+    //     Alert.alert(
+    //         'You can only read one book at a time',
+    //         '',
+    //         [
+    //             { text: 'OK', onPress: () => navigation.goBack() },
+    //         ]
+    //     );
+    // }
+
 
     return (
         <View style={styles.container}>

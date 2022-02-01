@@ -20,44 +20,26 @@ const StudyScreen = () => {
   const [isLoaded, setIsLoaded] = useState(false)
   useEffect(() => {
     getUserCards();
-    console.log("studycreen")
-    
   }, [isLoaded])
 
-
-  // // Filter the cards so only cards to be reviewed will be present
-  // const filterCards = (Card) => {
-  //   // Create a timestamp from TimeStamp. 
-  //   const cardTime = Card.nextReview.toDate();
-  //   const currentTime = firebase.firestore.Timestamp.fromDate(new Date()).toDate();
-  //   if (currentTime > cardTime) {
-  //     return Card;
-  //   }
-  // }
-  // if (studyCards.length === 0) {
-  //   console.log("studyCards is empty")
-  // } else {
-  //   // console.log(studyCards)
-  // }
-
-  // We need to use those to make a query to the cards to get questions and answers
-  // The cards needs to be funneled into the studyScreen
-  // Based on whether the user remembers them 
-
+  // Try to place this in progress screen an make it a call
   const getUserCards = async () => {
     const userCardRef = await db.collection('userCards');
       const currentTime = firebase.firestore.Timestamp.fromDate(new Date())
-      // we'll filter it locally, instead of using the firestore
-      // we make an if statement that checks whether it's <= the current time. If so we set the state
     try {
       userCardRef.where("userID", "==", auth.currentUser.uid).onSnapshot(snapshot => {
-        setStudyCards(snapshot.docs.map(doc => doc.data()));
-        const arr = snapshot.docs.map(doc => doc.data());
-        arr.forEach(card => {
-          if(card.nextReview <= currentTime) {
-            setStudyCards([...studyCards], card)
-          }
-        });
+        if(studyCards.length == 0) {
+          setStudyCards(snapshot.docs.map(doc => doc.data()))
+        } else {
+          const arr = snapshot.docs.map(doc => doc.data());
+          const cards = [];
+          arr.forEach(card => {
+            if(card.nextReview <= currentTime){
+              cards.push(card)
+            }
+          });
+          setStudyCards(cards)
+        }
       })
       setIsLoaded(true)
     } catch (err) {
@@ -65,6 +47,7 @@ const StudyScreen = () => {
     }
     console.log("getusercardsfunction")
   }
+
 
   // Timestamp nu - get all cards from now or earlier. - Problem is, this runs after the 
   // Se timestamp now.
