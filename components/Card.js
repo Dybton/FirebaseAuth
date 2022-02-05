@@ -7,9 +7,11 @@ const Card = ({ item, user, parentFunc }) => {
     const navigation = useNavigation();
     const [isReading, setIsReading] = useState(false)
 
+
     useEffect(() => {
         checkIfReading();
-      }, [])
+        console.log(isReading)
+      }, [isReading])
 
     
     const checkIfReading = () => {
@@ -42,6 +44,7 @@ const Card = ({ item, user, parentFunc }) => {
                 book: item,
                 user: user,
                 parentFunc: parentFunc,
+                setIsReading: setIsReading,
 
             })}>
                 <View style={styles.imageContentContainer}>

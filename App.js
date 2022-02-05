@@ -47,6 +47,8 @@ const MyTheme = {
   },
 };
 
+console.disableYellowBox = true;
+
 
 export default function App() {
   // Async Storage States 

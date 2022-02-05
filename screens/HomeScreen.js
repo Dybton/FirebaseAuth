@@ -9,6 +9,8 @@ import bookPage from '../assets/data/bookPage';
 
 const HomeScreen = ({ books, parentFunc, user}) => {
   const [userObject, setUserObject] = useState(user)
+  const [isReading, setIsReading] = useState(false)
+
   return (
     <View>
       <View style={styles.headerContainer}>

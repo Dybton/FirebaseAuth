@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, Button, StyleSheet, TouchableOpacity, Image, TouchableOpacityBase, Animated, ScrollView, FlatList } from 'react-native';
 import theme from '../assets/themes'
 import { db, auth, Timestamp } from '../firebase';
+import { useNavigation } from '@react-navigation/native';
 
 import FlipComponent from '../components/FlipComponent';
 import LargeButton from "../components/buttons/LargeButton";
@@ -15,12 +16,18 @@ import firebase from 'firebase/app'
 import 'firebase/firestore'
 
 const StudyScreen = () => {
+  const navigation = useNavigation();
+  
   // states
   const [studyCards, setStudyCards] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false)
   useEffect(() => {
     getUserCards();
   }, [isLoaded])
+
+  const handlePress = () => {
+    navigation.navigate("Home");
+}
 
   // Try to place this in progress screen an make it a call
   const getUserCards = async () => {
@@ -88,7 +95,17 @@ const StudyScreen = () => {
   //     setLoaded(true)
   //   }
   // }
-
+  // if(studyCards.length === 0) {
+  //   return(
+  //     <View style={styles.container}> 
+  //       <View style={styles.textContainer}>
+  //           <Text style={styles.imageTitle}>Sorry, there are no cards for these pages. Return when you have read more </Text>
+  //           <TouchableOpacity style={styles.button} onPress={handlePress}><Text style={styles.imageSubtitle}>Return to Home</Text></TouchableOpacity>
+  //           <Image style={styles.image} source={require('../assets/images/FlyingBooksBackGround.png')}/>
+  //       </View> 
+  //       </View>
+  //   )
+  // } else {
   return (
     <View>
       <TouchableOpacity>
@@ -110,32 +127,42 @@ const StudyScreen = () => {
             />
           ))}
       </ScrollView>
-
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: "row",
-    justifyContent: 'space-around',
+      flexDirection: "row",
+      justifyContent: 'space-around',
   },
   buttonContainer: {
-    marginTop: theme.spacing.l,
-  },
-  leftButton: {
-    marginRight: 100,
+      marginTop: theme.spacing.l,
   }, textContainer: {
-    alignItems: 'center',
-    marginTop: theme.spacing.l,
-    marginBottom: theme.spacing.m
+      paddingTop: '70%',
+      paddingLeft: '10%%',
+      paddingRight: '10%%',
+      justifyContent: 'center',
+      alignItems: 'center',
+      alignContent: 'center',
+      marginTop: theme.spacing.l,
+      marginBottom: theme.spacing.m
   }, imageTitle: {
-    ...theme.textVariants.h1,
-    color: theme.colors.white,
+      ...theme.textVariants.h1,
+      color: theme.colors.white,
+      
   },
   imageSubtitle: {
-    ...theme.textVariants.body2,
-    color: theme.colors.white
+      ...theme.textVariants.body2,
+      color: theme.colors.white
+  }, button: {
+      ...theme.button,
+      backgroundColor: theme.colors.primary,
+      width: 300,
+  }, image: {
+      marginTop: '20%',
+      width: 400,
+      height: 216.27,
   }
 });
 
