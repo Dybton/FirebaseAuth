@@ -29,13 +29,13 @@ const StudyCard = ({ question, answer, cardsToStudy, step, userID, cardID, getUs
     getUserCards();
   }, [])
 
-
     const nextCard = () => {
         setMiddleSectionEnabled(false)
         setBottomSectionEnabled(false)
         setLeftButtonClicked(false)
         setRightButtonClicked(false)
         setIsQuestion(true)
+        setCurrentPosition(step)
         updateUserCards();
         if (cardsToStudy == 1) {
             navigation.navigate("QuestionsFinished")

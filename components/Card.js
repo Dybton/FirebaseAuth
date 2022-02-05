@@ -24,10 +24,18 @@ const Card = ({ item, user, parentFunc }) => {
         }
     }
 
+    const currentlyReadingText = () => {
+        if (isReading) {
+          return <Text style={styles.greyText}> Currently reading</Text> 
+        } else {
+          return null
+        }
+      }
+
     return (
         <ImageBackground
             source={item.background}
-            style={isReading ? [styles.ImageBackground, styles.markedBackground] : styles.ImageBackground}
+            style={isReading ? styles.ImageBackground : styles.ImageBackground}
             // <Text style={[styles.red, styles.big]}>Big red</Text>
         >
             <Pressable onPress={() => navigation.navigate("Book Detail", {
@@ -37,8 +45,11 @@ const Card = ({ item, user, parentFunc }) => {
 
             })}>
                 <View style={styles.imageContentContainer}>
+                    
                     <Text style={styles.imageTitle}> {item.title} </Text>
                     <Text style={styles.imageSubtitle}> {`Written by ${item.author}`} </Text>
+                    {currentlyReadingText()}
+                    
                 </View>
             </Pressable>
         </ImageBackground>
@@ -70,5 +81,8 @@ const styles = StyleSheet.create({
     imageSubtitle: {
         ...theme.textVariants.body2,
         color: theme.colors.white
+    }, greyText: {
+        ...theme.textVariants.body2,
+        color: "#A6BAEB",
     }
 })

@@ -3,20 +3,23 @@ import Card from '../components/Card'
 import Books from '../components/Books'
 import React, { useState, useEffect } from 'react';
 import Separator from '../components/Separator'
+import theme from '../assets/themes';
 import { auth, db } from '../firebase';
 import bookPage from '../assets/data/bookPage';
 
 const HomeScreen = ({ books, parentFunc, user}) => {
   const [userObject, setUserObject] = useState(user)
-
   return (
     <View>
       <View style={styles.headerContainer}>
-        <Text style={styles.headerText}> Welcome {user.name}</Text>
+        <Text style={styles.headerText}> Hello {user.name}</Text>
       </View>
       <Separator />
+      <View style={styles.subtitleContainer}>
+        <Text style={styles.imageTitle}> Choose one or more books</Text>
+      </View>
       <View>
-        <Books books={books} user={user} parentFunc={parentFunc} />
+        <Books books={books} user={user} parentFunc={parentFunc}/>
       </View>
       <Image style={styles.image} source={require('../assets/images/PileOfBooks.png')}/>
     </View>
@@ -48,9 +51,20 @@ const styles = StyleSheet.create({
     paddingTop: 50,
     alignItems: 'center',
   },
+  subtitleContainer: {
+    paddingTop: 20,
+    alignItems: 'center',
+  },
   headerText: {
     color: 'white',
     fontWeight: '400',
     fontSize: 30,
-  }
+  }, imageTitle: {
+    ...theme.textVariants.h1,
+    color: theme.colors.white,
+},
+imageSubtitle: {
+    ...theme.textVariants.body2,
+    color: theme.colors.white,
+}
 })

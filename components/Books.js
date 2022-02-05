@@ -50,7 +50,5 @@ const styles = StyleSheet.create({
     },
     bookContainer: {
         marginBottom: theme.spacing.l
-
-
     }
 })
