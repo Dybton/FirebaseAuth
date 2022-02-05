@@ -52,7 +52,6 @@ const setUserCard = async (data) => {
       step: 0,
     })
   }
-  console.log("Setusercards function")
 }
 
   /**

@@ -11,6 +11,23 @@ const HomeScreen = ({ books, parentFunc, user}) => {
   const [userObject, setUserObject] = useState(user)
   const [isReading, setIsReading] = useState(false)
 
+  console.log(books.length)
+  
+  if(books.length === 0) {
+    return (
+      <View>
+      <View style={styles.headerContainer}>
+      </View>
+      <View style={styles.subtitleContainer}>
+      </View>
+      <View>
+        <Books books={books} user={user} parentFunc={parentFunc}/>
+      </View>
+      <Image style={styles.image} source={require('../assets/images/PileOfBooks.png')}/>
+    </View>
+    )
+  } 
+  else {
   return (
     <View>
       <View style={styles.headerContainer}>
@@ -26,6 +43,7 @@ const HomeScreen = ({ books, parentFunc, user}) => {
       <Image style={styles.image} source={require('../assets/images/PileOfBooks.png')}/>
     </View>
   )
+}
 }
 
 export default HomeScreen
@@ -55,7 +73,8 @@ const styles = StyleSheet.create({
   },
   subtitleContainer: {
     paddingTop: 20,
-    alignItems: 'center',
+    paddingLeft: '7%',
+
   },
   headerText: {
     color: 'white',

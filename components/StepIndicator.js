@@ -14,7 +14,6 @@ const StepIndicatorFunction = (props) => {
         props.setCurrentPosition(0)
     }
     const rememberAnswer = () => {
-        // (currentPosition < 7 ? setCurrentPosition(currentPosition + 1) : null);
         props.setLeftButtonClicked(false)
         props.setRightButtonClicked(true)
         props.enableBottom()
@@ -37,7 +36,6 @@ const StepIndicatorFunction = (props) => {
                     stepCount={4}
                     customStyles={thirdIndicatorStyles}
                     currentPosition={props.currentPosition}
-                    // we need to make these dynamic
                     labels={['0 Days', '3 Days', '10 Days', '21 Days']}
                 />
             </View>
@@ -45,7 +43,6 @@ const StepIndicatorFunction = (props) => {
     );
 };
 
-// Style for the StepIndicator
 const thirdIndicatorStyles = {
     stepIndicatorSize: 28,
     currentStepIndicatorSize: 32,

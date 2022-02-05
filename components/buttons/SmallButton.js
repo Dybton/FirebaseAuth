@@ -11,6 +11,7 @@ const SmallButton = ({ onPress, title, status }) => (
 
 const styles = StyleSheet.create({
     smallButtonContainer: {
+        marginTop: 1,
         backgroundColor: '#293D6E',
         width: '40%',
         padding: 15,
@@ -22,7 +23,7 @@ const styles = StyleSheet.create({
     }, smallButtonContainerHighlighted: {
         backgroundColor: '#293D6E',
         width: '40%',
-        padding: 15,
+        padding: 13,
         borderRadius: 10,
         marginTop: 10,
         alignItems: 'center',
