@@ -33,8 +33,6 @@ const FlipComponent = ({ setIsQuestion, isQuestion, enableMiddle, question, answ
     outputRange: ['180deg', '360deg'],
   });
 
-  // What I'm basically want is to show the top component 
-
   return (
     <View>
       <TouchableOpacity onPress={handleFlip}>

@@ -10,14 +10,18 @@ const FlipCard = ({ question, answer, isQuestion }) => {
     if (isQuestion) {
         return (
             <View style={styles.card}>
-                <Text style={styles.cardText}> {question} </Text>
+                <View style={styles.textContainer}> 
+                    <Text style={styles.cardText}>{question}</Text>
+                </View>
                 <Text style={styles.clickToSeeAnswerText}> Try to recall. Then click to see answer </Text>
             </View>
         );
     } if (!isQuestion) {
         return (
             <View style={styles.card}>
-                <Text style={styles.cardText}> {answer} </Text>
+                <View style={styles.textContainer}> 
+                    <Text style={styles.cardText}>{answer}</Text>
+                </View>
             </View>
         );
     }
@@ -34,6 +38,12 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         borderWidth: 1,
+    },
+    textContainer: {
+        position: 'absolute',
+        marginLeft: 20,
+        marginRight: 20,
+
     },
     cardText: {
         color: theme.colors.white,
